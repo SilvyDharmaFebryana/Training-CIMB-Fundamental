@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  // let arrItemNames = ['Jeruk', 'Mangga', 'Apel']
+  // let arrPrice = [10000, 7000, 13000]
+  // let arrStock = [10, 10, 10]
+  // let arrInputs = [0, 0, 0]
+
+  let arrItemNames = [
+    {
+      namaBuah: 'Jeruk',
+      harga: 2000,
+      qty: 10,
+      input: 0
+    },
+    {
+      namaBuah: 'Mangga',
+      harga: 3000,
+      qty: 10,
+      input: 0
+    },
+    {
+      namaBuah: 'Apel',
+      harga: 4000,
+      qty: 10,
+      input: 0
+    }
+  ]
+  let inputUserMenu;
+  let inputUserMenuIndex;
+  let inputUserQty;
+  let isRepeat;
+  let totalPrice;
+  let userPayment;
+
+  let menu = ''
+
+
+
+do {
+
+    menu = ''
+
+    for (let i = 0; i < arrItemNames.length; i++) {
+      menu += `${i + 1}. ${arrItemNames[i].namaBuah} IDR ${arrItemNames[i].harga}/pcs (${arrItemNames[i].qty} items in stock)\n`
+    }
+
+    menu += `${arrItemNames.length + 1}. Bayar\n`//${arrItemNames.length + 2}. Keranjang Belanja`
+    menu += `${arrItemNames.length + 2}. checkout\n`
+
+    inputUserMenu = prompt(menu)
+    inputUserMenuIndex = inputUserMenu - 1
+
+    if (inputUserMenu == arrItemNames.length + 1) {
+      totalPrice = 0
+
+      for (let i = 0; i < arrItemNames.length; i++) {
+        totalPrice += arrItemNames[i].harga * arrItemNames[i].input
+      }
+
+      do {
+        //alert(arrItemNames.input)
+        userPayment = prompt(`Total belanjaan anda sebesar IDR ${totalPrice}`)
+
+        if (userPayment > totalPrice) {
+          alert(`Kembalian anda IDR ${userPayment - totalPrice}`)
+          isRepeat = false
+        } else if (userPayment < totalPrice) {
+          alert(`Uang anda kurang IDR ${totalPrice - userPayment}`)
+          isRepeat = true
+        } else if (userPayment == totalPrice) {
+          alert('Terima kasih sudah membayar dengan uang pas')
+          isRepeat = false
+        }
+      } while (isRepeat)
+
+      for (let i = 0; i < arrItemNames.length; i++) {
+        arrItemNames[i].qty -= arrItemNames[i].input
+        arrItemNames[i].input = 0
+      }
+      isRepeat = confirm('Apakah anda ingin berbelanja kembali?')
+
+
+    } else if (inputUserMenu == arrItemNames.length + 2) {
+      belanjaan = ''
+      for (let i = 0; i < arrItemNames.length; i++) {
+          belanjaan += (`Buah ${arrItemNames[i].namaBuah} yang kamu beli sejumlah ${arrItemNames[i].input} dengan harga ${arrItemNames[i].input * arrItemNames[i].harga}\n`)
+      } alert(belanjaan)
+    
+
+    } else {
+      do {
+        inputUserQty = parseInt(prompt(`Mau beli berapa ${arrItemNames[inputUserMenuIndex].namaBuah}?`))
+
+        if (arrItemNames[inputUserMenuIndex].qty >= (inputUserQty + arrItemNames[inputUserMenuIndex].input)) {
+          arrItemNames[inputUserMenuIndex].input += inputUserQty
+          isRepeat = false
+        } else {
+          alert(`Stock ${arrItemNames[inputUserMenuIndex].namaBuah} tidak cukup`)
+          isRepeat = true
+        }
+
+      } while (isRepeat)
+
+      isRepeat = true
+    }
+} while (isRepeat)
+
+</script>
+
+</html>

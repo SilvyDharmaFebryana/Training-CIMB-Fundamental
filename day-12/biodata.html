@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<h2>
+    <center>BIODATA ANGRY BIRD</center>
+</h2>
+
+<body>
+    <center>
+        <style>
+            table,
+            th,
+            td {
+                border: 3px solid black;
+                border-collapse: collapse;
+                text-align: center;
+            }
+
+            th,
+            td {
+                padding: 5px;
+            }
+        </style>
+        <table id="myTable" align="center">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Nama</th>
+                    <th>Pekerjaan</th>
+                    <th onclick="sortTable(2)">Umur</th>
+                    <th>Gender</th>
+                    <th>Biodata</th>
+                    <th>Picture</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="mainData">
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td><input id="inputNama" type="text" placeholder="Input Nama" required></td>
+                    <td><input id="inputPekerjaan" type="text" placeholder="Input Pekerjaan" required></td>
+                    <td><input id="inputUmur" type="number" placeholder="Input Umur" required></td>
+                    <td><br><input id="inputMale" type="radio" name="gender" value="male">M</br>
+                        <input id="inputFemale" type="radio" name="gender" value="female">F</td>
+                    <td><textarea id="inputBio" name="biodata" onkeyup="counterSring()"></textarea>
+                        <span id="wordcount">1/30</span></td>
+                    <td><input id="inputPicture" type="text" placeholder="Picture Link" required></td>
+                    <td><input id="submitBtn" type="submit" value="Submit" onclick="addData()"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table id="mySearch">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot>
+                <br>
+                <tr>
+                    <td><input id="searchNama" type="search" placeholder="Search by Name" required></td>
+                    <td><input id="searchJob" type="search" placeholder="Search by Job" required></td>
+                    <td><select id="searchGender" placeholder="Search Gender">
+                            <option disabled value="">Select Gender</option>
+                            <option value="">All</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select></td>
+                    <td>
+                        <input id="SearchMinUmur" type="number" placeholder="minimum age" required> -
+                        <input id="SearchMaxUmur" type="number" placeholder="maximum age" required>
+                    </td>
+                    <td><input id="searchBtn" type="submit" value="Search" onclick="filterAndSearch()"></td>
+                </tr>
+            </tfoot>
+        </table>
+        <h3 id="formWarning"></h3>
+        <h3 id="tabelKosong"></h3>
+</body>
+</center>
+
+<script>
+    class Orang {
+        constructor(nama, pekerjaan, umur, gender, biodata, picture) {
+            this.nama = nama
+            this.pekerjaan = pekerjaan
+            this.umur = umur
+            this.gender = gender
+            this.biodata = biodata
+            this.picture = picture
+        }
+    }
+
+
+    let dataOrang = [
+        new Orang('baba', 'tukang tidur', 26, 'male', 'Angry Birdstival, Halloween tahun 2011, Ham o ween, natal 2011, Wreck the Halls, Spesial Imlek 2012, Year Of the Dragon, Cherry Blossom, untuk memperingati musim semi di Jepang, dan episode Piglantis, yang mengambil tema Atlantis', 'https://1.bp.blogspot.com/-obg6bsuiOSA/TyXdmswBSMI/AAAAAAAAAes/bG_UfHkwwMQ/s1600/white-angry-birds.png'),
+        new Orang('xoxo', 'tukang masak', 20, 'female', 'Rovio merilis Angry Birds Magic, yang dikhususkan untuk perangkat NFC-aktif Symbian untuk Nokia C7. ', 'https://vignette.wikia.nocookie.net/angrybirds/images/3/33/20130404-matilda..png/revision/latest/scale-to-width-down/340?cb=20130407201510&path-prefix=es'),
+        new Orang('nunu', 'tukang marah', 24, 'male', 'Pada bulan November 2012 Rovio mengumumkan permainan baru Angry Birds yang berdasarkan trilogi film Star Wars. Beberapa Level berdasarkan 2 tipe permainan dengan cara normal atau cara "Gravity Force". ', 'https://i.pinimg.com/originals/1b/2e/39/1b2e39300f11dc11894fa75b7dbba43e.png')
+    ]
+
+
+    //===== Menampilkan Data =====
+    const renderData = (arr = dataOrang) => {
+        let hasil = ''
+        arr.forEach(({ nama, pekerjaan, umur, gender, biodata, picture }, idx) => {
+            let biodata1
+            if (biodata.length > 30) {
+                biodata1 = biodata.slice(0, 30) + "..."
+            } else {
+                biodata1 = biodata
+            }
+
+            hasil += `
+            <tr>
+                <td> ${nama} </td>
+                <td> ${pekerjaan} </td>
+                <td> ${umur} </td>
+                <td> ${gender} </td>
+                <td><textarea readonly>${biodata1}</textarea></td>
+                <td><img src = ${picture} width="65px" required></td>
+                <td><input type="button" value="Delete" onclick="deleteData(${idx})" required></td> 
+            </tr> `
+        })
+        document.getElementById("mainData").innerHTML = hasil
+
+    }
+    renderData(dataOrang)
+
+
+    //===== tambah data ====
+    const addData = () => {
+        let inputNama = document.getElementById("inputNama").value
+        let inputPekerjaan = document.getElementById("inputPekerjaan").value
+        let inputUmur = parseInt(document.getElementById("inputUmur").value)
+        let inputPicture = document.getElementById("inputPicture").value
+        let inputBio = document.getElementById("inputBio").value
+        let inputGender
+
+        if (document.getElementById("inputMale").checked) {
+            inputGender = document.getElementById("inputMale").value
+        } else if (document.getElementById("inputFemale").checked) {
+            inputGender = document.getElementById("inputFemale").value
+        }
+
+        let newData = new Orang(inputNama, inputPekerjaan, inputUmur, inputGender, inputBio, inputPicture)
+        let ulang
+
+        if (inputNama == false || inputPekerjaan == false || inputUmur == false || inputPicture == false) {
+            alert('Data ada yang kosong')
+        } else {
+            dataOrang.push(newData)
+            alert('Data ditambahkan')
+            renderData()
+            document.getElementById("tabelKosong").innerHTML = ''
+            inputNama = document.getElementById("inputNama").value = ''
+            inputPekerjaan = document.getElementById("inputPekerjaan").value = ''
+            inputUmur = document.getElementById("inputUmur").value = ''
+            inputBio = document.getElementById("inputBio").value = ''
+            document.getElementById("wordcount").innerHTML = 0
+            inputPicture = document.getElementById("inputPicture").value = ''
+        }
+    }
+
+
+    //===== delete data =====
+    const deleteData = (deleteIndex) => {
+        dataOrang.splice(deleteIndex, 1)
+        renderData()
+        alert('data dihapus')
+        if (dataOrang == 0) {
+            document.getElementById("tabelKosong").innerHTML = `Data Kosong`
+        } else {
+            document.getElementById("tabelKosong").innerHTML = ``
+        }
+
+    }
+
+
+    //===== sort =====
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("mainData");
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+
+    //===== menghitung string =====
+    const counterSring = () => {
+        document.getElementById("wordcount").innerHTML = inputBio.value.length + '/30'
+    }
+    renderData()
+
+
+    //===== filter data =====
+
+    const filterAndSearch  = search => {
+    let hasil = []
+    let filterNama = document.getElementById("searchNama").value
+    let filterPekerjaan = document.getElementById("searchJob").value
+    let filterGender = document.getElementById("searchGender").value
+    let filterUmurMin = parseInt(document.getElementById("SearchMinUmur").value)
+    let filterUmurMax = parseInt(document.getElementById("SearchMaxUmur").value)
+    
+    if (!filterUmurMax) {
+        filterUmurMax = 999
+    } else if(!filterUmurMin) {
+        filterUmurMin = 0
+    }
+
+    dataOrang.forEach((values) => {
+        let { nama, pekerjaan, gender, umur} = values
+        if(nama.toLowerCase().startsWith(filterNama.toLowerCase()) &&
+        pekerjaan.toLowerCase().startsWith(filterPekerjaan.toLowerCase()) &&
+        gender.toLowerCase().startsWith(filterGender.toLowerCase()) &&
+        umur >= filterUmurMin && umur <= filterUmurMax
+        ) {
+            hasil.push(values)
+        }
+
+    })
+    renderData(hasil)
+    }
+
+
+
+
+</script>
+
+</html>

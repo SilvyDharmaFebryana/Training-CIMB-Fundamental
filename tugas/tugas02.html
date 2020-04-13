@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+   
+    .tampilan {
+        text-align: center
+    }
+</style>
+
+<body>
+    <div class="tampilan">
+        <h1>==== Stopwatch ====  </h1>
+        <h3 id="stopwatch">0 : 0 : 0</h3>
+        <h3 id="stopwatch1">Milisecond : 0</h3>
+        <input type="button" value="Stop" onclick="stopTimer()">
+        <input type="button" value="Start" onclick="startTimer()">
+        <input  type="button" value="Reset" onclick="resetTimer()">
+        <input  type="button" value="LAP" onclick="lapTimer()">
+        <p>***********</p>
+    </div>
+    <div>
+            <p id="tampilLap"></p>
+    </div>
+        
+
+
+
+
+</body>
+<script>
+
+    let mildetik = 0
+    let detik = 0
+    let menit = 0
+    let jam = 0
+    let varInterval
+    let varInt
+    const startTimer = () => {
+        //    detik=0
+        //    menit=0
+        //    jam=0
+        varInterval = setInterval(() => {
+            document.getElementById('stopwatch').innerHTML = `${jam} : ${menit} : ${detik} `
+          
+            if (detik == 60) {
+                menit += 1
+                detik = 0
+                mildetik = 0
+                // jam =0
+            } else if (menit == 60) {
+                jam += 1
+                menit = 0
+                detik = 0
+                mildetik = 0
+            }
+
+            // detik++
+        }, 1000)
+        miliSecond()
+
+    }
+    const miliSecond = () => {
+        mildetik = 0
+        varInt = setInterval(() => {
+            document.getElementById('stopwatch1').innerHTML = `Milisecond : ${mildetik}`
+
+            if (mildetik == 50) {
+                detik +=1
+                mildetik = 0
+                // menit=0
+                // jam=0
+            }
+            mildetik+=1
+            // startTimer()
+        }, 50)
+    }
+
+
+    const stopTimer = () => {
+        if (varInterval) {
+            clearInterval(varInterval)
+            varInterval = null
+        }
+        // clearInterval(varInterval)
+        if (varInt) {
+            clearInterval(varInt)
+            varInt = null
+        }
+
+    }
+    const resetTimer = () => {
+        // alert('Masuk')
+        clearInterval(varInterval)
+        clearInterval(varInt)
+        jam = 0
+        menit = 0
+        detik = 0
+        mildetik = 0
+        document.getElementById('stopwatch').innerHTML = `${jam} : ${menit} : ${detik} `
+        document.getElementById('stopwatch1').innerHTML = `Millisecond : ${mildetik}`
+        document.getElementById('tampilLap').innerHTML = ` `
+    }
+
+    const lapTimer = () => {
+        // let nomor =0
+         
+        document.getElementById('tampilLap').innerHTML += `LAP.&nbsp &nbsp ${jam} : ${menit} : ${detik} : ${mildetik} <br> `
+    }
+</script>
+
+</html>

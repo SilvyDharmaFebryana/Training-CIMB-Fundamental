@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+//harga buah
+let hargaleci = 2000
+let hargamangga = 3000
+let hargajeruk = 4000
+let hargaapel = 5000
+
+//stock buah
+let stockleci = 10
+let stockmangga = 10
+let stockjeruk = 10
+let stockapel = 10
+
+// kondisi
+let conditionbuah = true
+let ulang = true
+//var tanya
+
+let mangga
+let leci
+let jeruk
+let apel
+
+do {
+alert(
+    `STOCK BUAH DI PASAR BUAH LOOP
+ Buah Leci ${stockleci}/biji dengan harga Rp ${hargaleci} ,-
+ Buah Mangga ${stockmangga}/biji dengan harga Rp ${hargamangga} ,-
+ Buah Jeruk ${stockjeruk}/biji dengan harga Rp ${hargajeruk} ,-
+ Buah Apel ${stockapel}/biji dengan harga Rp ${hargaapel} ,-`)
+
+
+    do {
+        mangga = prompt('masukkan jumlah mangga')
+
+        if (mangga <= stockmangga && mangga >= 0) {
+            ulang = false
+        } else {
+            ulang = true
+        }
+    } while (ulang)
+
+    do {
+        leci = prompt('masukkan jumlah leci')
+
+        if (leci <= stockleci && leci >= 0) {
+            ulang = false
+        } else {
+            ulang = true
+        }
+    } while (ulang)
+
+
+    do {
+        apel = prompt('masukkan jumlah apel')
+
+        if (apel <= stockapel && apel >= 0) {
+            ulang = false
+        } else {
+            ulang = true
+        }
+    } while (ulang)
+
+    do {
+        jeruk = prompt('masukkan jumlah jeruk')
+        if (jeruk <= stockjeruk && jeruk >= 0) {
+            ulang = false
+        } else {
+            ulang = true
+        }
+    } while (ulang)
+
+  //  let total = (leci*hargaleci) + (mangga*hargamangga) + (jeruk*hargajeruk) + (apel*hargaapel)
+        let total = (leci*hargaleci) + (mangga*hargamangga) + (jeruk*hargajeruk) + (apel*hargaapel)
+        alert('Total belanjaan anda: Rp' + total)
+        let uang = prompt('masukkan jumlah uang') 
+    do {
+        
+        if (total > uang) {
+            alert('Mohon maaf uang anda kurang')
+            ulang = true
+        } else if(total < uang) {
+            alert('Kembalian anda : Rp' + (uang - total))
+            ulang = false
+        } else if (total == uang) {
+            alert('Terimakasih atas kunjungannya')
+            ulang = false
+            //confirm('apakah anda ingin berbelanja lagi?')
+    } while (ulang)
+    
+    stockmangga -= mangga
+    stockleci -= leci
+    stockjeruk -= jeruk
+    stockapel -= apel
+
+    ulang = confirm('apakah ingin belanja lagi?')
+    //ulang = true
+
+} while (ulang) 
+    
+
+</script>
+</html>

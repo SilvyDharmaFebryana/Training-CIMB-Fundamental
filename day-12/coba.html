@@ -1,0 +1,24 @@
+<html>
+<head>
+	<title>Input Otomatis Menggunakan Javascript</title>
+</head>
+<body>
+
+<input id="input_otomatis" size="35"/>
+<script type="text/javascript">
+	var input = document.getElementById('input_otomatis');
+
+	var type_this = "";
+	var index = 0;
+
+window.next_letter = function() {
+    if (index <= type_this.length) {
+        input.value = type_this.substr(0, index++);
+        setTimeout("next_letter()", 80);
+    }
+}
+
+next_letter();
+</script>
+</body>
+</html>

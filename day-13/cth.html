@@ -1,0 +1,50 @@
+<head>
+    <title>untitled</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="generator" content="Geany 0.20" />
+   
+    <style>
+    #container{
+    background:#5a8f00;
+    font-style:oblique;
+    height:200px;
+    font-size:10pt;
+    }
+    </style>
+    </head>
+    <body>
+    <div id="container" style="border:1px solid red;" />
+    <div id="container2" />
+    <select>
+    <option>Pilih</option>
+    <option>0 dan 4</option>
+    <option>1 dan 4</option>
+    <option>2 dan 4</option>
+    <option>3 dan 4</option>
+    <option>4 dan 4</option>
+    </select>
+    <input type="text" name="data"  />
+    <input type="button" value="masukkan" name="masuk" />
+    <input type="button" value="hapuskan" name="hapus" />
+    </body>
+
+    <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    $("select").change(function(){
+    $("input[name=data]").val($(this).val());
+    // hapus option yang dipilih
+    $("#container2").append("<div>Anda telah memilih "+$(this).val()+"</div>");
+    })
+    $("input[name=masuk]").click(function(){
+    var pilihan = $("input[name=data]").val();
+    $("select").append("<option>"+pilihan+"</option>");
+    $("#container2").append("<div>Anda telah menambahkan "+pilihan+"</div>");
+    })
+    $("input[name=hapus]").click(function(){
+    $("#container2").append("<div>Anda telah menghapus"+$('option:selected').val()+"</div>");
+    $("select").find('option:selected').remove();
+    })
+    })
+    </script>
+    </html> 

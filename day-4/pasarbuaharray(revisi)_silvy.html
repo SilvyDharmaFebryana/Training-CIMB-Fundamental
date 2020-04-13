@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+
+let arrBuah = ['jeruk', 'apel', 'mangga']
+let arrStock = [10, 20, 15]
+let arrHarga = [2000, 5000, 7000]
+let arrBuahInput = [0, 0, 0]
+let semua = '' 
+
+let jeruk
+let apel
+let mangga
+
+var ulang
+
+
+
+for (var i=0 ; i < arrHarga.length ; i++ ){
+    semua += arrBuah[i] + ' terdapat stock ' + arrStock[i] + '/pcs ' + 'Rp' + arrHarga[i] + '\n'
+   
+}  alert (semua)
+
+do{
+    var menu = prompt(`Pilih Menu :
+
+    1. Jeruk = ${arrStock[0] + ' /pcs'}
+    2. Apel = ${arrStock[1] + ' /pcs'}
+    3. Mangga = ${arrStock[2] + ' /pcs'}
+
+    4. Bayar 
+
+    Masukkan Menu :
+    `)
+
+
+    if (menu == 1) {
+     jeruk = parseInt(prompt('Silahkan masukkan jumlah Jeruk'))
+        if (jeruk > arrStock[0]) {
+            alert('Stock tidak mencukupi')
+            ulang = true
+        } else {
+            alert('total Jeruk yang anda pilih adalah = ' + jeruk + ' /pcs')
+            ulang = false
+            arrBuahInput[0] += jeruk
+            
+        } //arrStock[0] -= arrBuahInput[0]
+    
+    } else if (menu == 2) {
+    apel = parseInt(prompt('Silahkan masukkan jumlah apel'))
+        if (apel > arrStock[1]) {
+            alert('Stock tidak mencukupi')
+            ulang = true
+        } else {
+            alert('total Jeruk yang anda pilih adalah = ' + apel + ' /pcs')
+            ulang = false
+            arrBuahInput[1] += apel
+        } // arrStock[1] -= arrBuahInput[1]
+    
+    } else if (menu == 3) {
+    mangga = parseInt(prompt('Silahkan masukkan jumlah mangga'))
+        if (mangga > arrStock[2]) {
+            alert('Stock tidak mencukupi')
+            ulang = true
+        } else {
+            alert('total Mangga yang anda pilih adalah = ' + mangga + ' /pcs')
+            ulang = false
+            arrBuahInput[2] += mangga
+        }// arrStock[2] -= arrBuahInput[2] 
+        
+    } else if (menu == 4) {
+        let total = 0
+        for ( var j=0 ; j < arrHarga.length ; j++){
+            total += arrBuahInput[j] * arrHarga[j]
+          //  alert('total belanjaan anda adalah = Rp ' + total)     
+        }
+
+        alert('total belanjaan anda adalah = Rp ' + total) 
+         
+        var ulangBayar = true
+
+        while (ulangBayar) {
+            let uang = prompt('masukkan jumlah uang')
+            if (total > uang) {
+                alert('Mohon maaf uang anda kurang')
+                ulangBayar = true
+            } else if (total < uang) {
+                alert('Kembalian anda : Rp ' + (uang - total))
+                ulangBayar = false
+            } else {
+                alert('Terimakasih atas kunjungannya')
+                ulangBayar = false
+            }
+
+         arrStock[0] -= arrBuahInput[0] 
+         arrStock[1] -= arrBuahInput[1]
+         arrStock[2] -= arrBuahInput[2]
+
+
+        } var belanja = confirm('apakah anda ingin belanja kembali?')
+            if (belanja == true) {
+                ulang = true 
+                if (arrStock[0] == 0 && arrStock[1] == 0 && arrStock[2] == 0) {
+                    alert('mohon maaf stock buah sudah habis semuanya')
+                    break
+                }
+            } else {
+                alert('Terimakasih atas kunjungannya')
+                ulang = false
+                break
+            }
+       
+//ulang = false
+        
+
+} else {
+    alert(`Menu yang anda masukkan tidak ada!!
+         Mohon masukkan menu kembali`)
+    
+    }
+ulang = true
+
+} while(ulang)
+ 
+    
+
+
+
+</script>
+</html>

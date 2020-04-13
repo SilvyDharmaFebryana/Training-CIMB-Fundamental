@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+
+let ims = 'IMS'
+let berat = parseFloat(prompt('masukkan berat'))
+let tinggi = parseFloat(prompt('masukkan tinggi'))
+let total = berat / (tinggi**2)
+
+if (total > 40) {
+    alert('Obesitas')
+} else if (total >= 30) {
+    alert('BB sangat berlebih')
+} else if (total >= 25) {
+    alert('BB berlebih') 
+} else if (total >= 18.5) {
+    alert('BB Ideal')
+} else {
+    alert('BB kurang')
+}
+</script>
+</html>

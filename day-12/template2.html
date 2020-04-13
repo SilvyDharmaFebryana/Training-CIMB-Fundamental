@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        fieldset {
+            margin-left: 200px;
+            margin-right: 200px;
+            border: 2px solid brown
+        }
+
+        table,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 15px;
+        }
+
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        tr {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 3px;
+        }
+
+        td {
+            padding: 5px;
+        }
+    </style>
+    <fieldset>
+        <legend><b>FILTER</b></legend>
+        <p>Nama Item : <input type="text" id="namaItem" name="namaItem"><br></p>
+        <p>Harga Item : <input type="text" id="hargaItemMin" name="hargaItemMin"> - <input type="text" id="hargaItemMax"
+                name="hargaItemMax"><br></p>
+        <p>Kategori Item : <select id="searchKategori" placeholder="">
+                <option disable value="">All</option>
+                <option value="fastFood">Fast Food</option>
+                <option value="electronic">Electronic</option>
+                <option value="clothing">Clothing</option>
+                <option value="fruit">Fruit</option>
+            </select></p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>INPUT DATA</b></legend>
+        <p>
+            <table>
+                <tr>
+                    <input id="idItems" type="hidden" placeholder="Id Item" required>
+                    <td><input id="inputNama" type="text" placeholder="Nama Item" required></td>
+                    <td><input id="inputHarga" type="text" placeholder="Harga Item" required></td>
+                    <td><select id="inputKategori" placeholder="">
+                            <option disable value="">all</option>
+                            <option id="inputFastFood" value="Fast Food">Fast Food</option>
+                            <option id="inputElektronik" value="Elektronik">Electronic</option>
+                            <option id="inputBaju" value="Baju">Clothing</option>
+                            <option id="inputBuah" value="Buah">Fruits</option>
+                        </select></td>
+                    <td><input id="inputStock" type="text" placeholder="Stock Item" required></td>
+                </tr>
+
+            </table>
+            <br>
+            <input id="inputBtn" type="submit" value="input" onclick="addData()">
+            <br>
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>TABEL DATA</b></legend>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Kategori</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Stock</th>
+                        <th>Buy</th>
+                        <th colspan="2">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody id="mainData"></tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <br>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>KERANJANG BELANJA</b></legend>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Kategori</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Qty</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <br>
+            <input id="paymentBtn" type="submit" value="payment" onclick="">
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>PAYMENT</b></legend>
+        <p>
+            <h3>==== Transaction Detail ====</h3>
+        </p>
+    </fieldset>
+
+</body>
+
+<script>
+
+    class Items {
+        constructor(id, kategori, nama, harga, stock, input) {
+            this.id = id
+            this.kategori = kategori
+            this.nama = nama
+            this.harga = harga
+            this.stock = stock
+            this.input = input
+        }
+    }
+
+    class FastFood extends Items {
+        constructor(id, kategori, nama, harga, stock, input) {
+            super(id, kategori, nama, harga, stock, input)
+        }
+    }
+
+    class Elektronik extends Items {
+        constructor(id, kategori, nama, harga, stock, input) {
+            super(id, kategori, nama, harga, stock, input)
+        }
+    }
+
+    class Baju extends Items {
+        constructor(id, kategori, nama, harga, stock, input) {
+            super(id, kategori, nama, harga, stock, input)
+        }
+    }
+
+    class Buah extends Items {
+        constructor(id, kategori, nama, harga, stock, input) {
+            super(id, kategori, nama, harga, stock, input)
+        }
+    }
+
+    let arrItems = [
+        new FastFood(1583982258317, 'Fast Food', 'Indomie Rendang', 3000, 10, 0),
+        new Elektronik(1583980633693, 'Elektronik', 'Handphone Oppo', 1000000, 10, 0),
+        new Baju(1583980872475, 'Baju', 'Kaos Oblong', 50000, 10, 0),
+        new Buah(1583980867886, 'Buah', 'Kiwi', 5000, 10, 0)
+    ]
+
+    //===== tampil data di tabel =====
+    const renderData = () => {
+        let hasil = ''
+
+        arrItems.forEach(({ id, kategori, nama, harga, stock }, buy, action) => {
+
+            hasil += `
+            <tr>
+                <td> ${id} </td>
+                <td> ${kategori} </td>
+                <td> ${nama} </td>
+                <td> ${harga} </td>
+                <td> ${stock} </td>
+                <td><input type="button" value="buy" onclick="deleteData(${buy})" required></td>
+                <td><input type="button" value="edit" onclick="deleteData(${action})" required>
+                    <input type="button" value="delete" onclick="deleteData(${action})" required></td>
+
+            </tr> `
+        })
+        document.getElementById("mainData").innerHTML = hasil
+
+    }
+    renderData()
+
+
+    //===== tambah data =====
+    const addData = () => {
+
+        let inputNama = document.getElementById("inputNama").value
+        let inputHarga = document.getElementById("inputHarga").value
+        let inputStock = document.getElementById("inputStock").value
+        let inputKategori
+
+        if (document.getElementById("inputKategori").value) {
+            inputKategori = document.getElementById("inputKategori").value
+        } else if (document.getElementById("inputKategori").value) {
+            inputKategori = document.getElementById("inputKategori").value
+        } else if (document.getElementById("inputKategori").value) {
+            inputKategori = document.getElementById("inputKategori").value
+        } else if (document.getElementById("inputKategori").value) {
+            inputKategori = document.getElementById("inputKategori").value
+        }
+        
+        let date = new Date()
+        let noId = document.getElementById("idItems").innerHTML = date.getTime()
+
+        let newFastfood = new FastFood(noId, inputKategori, inputNama, inputHarga, inputStock)
+        let newElektronik = new Elektronik(noId, inputKategori, inputNama, inputHarga, inputStock)
+        let newBaju = new Baju(noId, inputKategori, inputNama, inputHarga, inputStock)
+        let newBuah = new Buah(noId, inputKategori, inputNama, inputHarga, inputStock)
+
+        if (inputKategori == false || inputNama == false || inputHarga == false || inputStock == false) {
+            alert("Mohon isi dengan lengkap")
+        } else {
+            if (inputKategori = document.getElementById("inputFastFood").value) {
+                arrItems.push(newFastfood)
+            } else if (inputKategori = document.getElementById("inputElektronik").value) {
+                arrItems.push(newElektronik)
+            } else if (inputKategori = document.getElementById("inputBaju").value) {
+                arrItems.push(newBaju)
+            } else if (inputKategori = document.getElementById("inputBuah").value) {
+                arrItems.push(newBuah)
+            }
+            alert("Data ditambah")
+            renderData()
+            inputNama = document.getElementById("inputNama").value = ''
+            inputHarga = document.getElementById("inputHarga").value = ''
+            inputStock = document.getElementById("inputStock").value = ''
+
+        }
+    }
+
+
+
+
+
+
+
+</script>
+
+</html>

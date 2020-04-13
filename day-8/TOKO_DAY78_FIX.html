@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    class Items {
+        constructor(nama, harga, stok, qty) {
+            this.nama = nama
+            this.harga = harga
+            this.stok = stok
+            this.qty = qty
+        }
+    }
+
+    class Buah extends Items {
+        constructor(nama, harga, stok, qty, kadaluarsa) {
+            super(nama, harga, stok, qty)
+            this.kadaluarsa = kadaluarsa
+        }
+    }
+
+    class Baju extends Items {
+        constructor(nama, harga, stok, qty, ukuran) {
+            super(nama, harga, stok, qty)
+            this.ukuran = ukuran
+        }
+    }
+
+    class Hp extends Items {
+        constructor(nama, harga, stok, qty, garansi) {
+            super(nama, harga, stok, qty)
+            this.garansi = garansi
+        }
+    }
+
+    let arrBuah = [
+        new Buah('Mangga', 2000, 10, 0, '1-01-2020'),
+        new Buah('Kiwi', 1000, 10, 0, '15-06-2022'),
+        new Buah('Apel', 3000, 10, 0, '10-07-2022')
+
+    ]
+
+    let arrBaju = [
+        new Baju('Kaos', 10000, 5, 0, 'S'),
+        new Baju('Kemeja', 20000, 5, 0, 'M'),
+        new Baju('Jaket', 30000, 5, 0, 'L')
+    ]
+
+    let arrHp = [
+        new Hp('vivo ', 1000000, 5, 0, 0),
+        new Hp('oppo ', 1500000, 10, 0, 0),
+        new Hp('samsung', 2000000, 10, 0, 1)
+    ]
+
+
+
+    let i, bayar, kembalian, PilihBuah, PilihJumlah, InputJumlah, totalharga, conditionUang, isRepeat, userCart, cartCount
+    let desc, menu = ''
+    let newItemnama
+    let newItemharga
+    let newItemstok, nota
+
+
+
+
+    function Pembayaran() {
+        do {
+            bayar = parseInt(prompt('Total yang harus anda bayar :'))
+            if (bayar == totalharga && bayar != NaN) {
+                alert('\nTerima kasih sudah membeli buah di toko ini')
+                isRepeat = confirm('Apakah anda ingin kembali berbelanja ?')
+                conditionUang = false
+            } else if (bayar > totalharga) {
+                kembalian = bayar - totalharga
+                alert('Kembalian anda : Rp.' + kembalian + '\nTerima kasih sudah membeli buah di toko ini')
+                isRepeat = confirm('Apakah anda ingin kembali berbelanja ?')
+                conditionUang = false
+            } else if (bayar < totalharga || bayar != NaN) {
+                kurang = totalharga - bayar
+                alert('Duit anda kurang : Rp.' + kurang + '\n\n  Silahkan bayar kembali')
+                conditionUang = true
+            }
+        }
+        while (conditionUang)
+    }
+
+
+    function AddtoCartBuah(PilihBuahIndex) {
+
+        MenuBuah = ''
+
+        PilihJumlahBuah = ('        Buah ' + arrBuah[PilihBuahIndex].nama + '\n\n' +
+            '    harga = Rp.' + arrBuah[PilihBuahIndex].harga + '\n' +
+            '    Sisa stok  = ' + arrBuah[PilihBuahIndex].stok + '\n' +
+            '    kadaluarsa = ' + arrBuah[PilihBuahIndex].kadaluarsa + '\n\n' +
+            'Input jumlah Buah ' + arrBuah[PilihBuahIndex].nama + ' Yang akan di beli')
+        var tanggalan = new Date()
+        var tanggal2 = arrBuah[PilihBuahIndex].kadaluarsa.split('-')
+        var dateKadaluarsa = new Date(tanggal2[2], tanggal2[1] - 1, tanggal2[0])
+        if (dateKadaluarsa >= tanggalan) {
+            InputJumlahBuah = prompt(PilihJumlahBuah)
+            if (InputJumlahBuah > arrBuah[PilihBuahIndex].stok || InputJumlahBuah == '' || InputJumlahBuah < 0) {
+                alert(dateNow)
+                alert('Inputan anda tidak valid atau melebihi stok')
+                isRepeat = true
+            } else {
+                arrBuah[PilihBuahIndex].qty += parseInt(InputJumlahBuah)
+                isRepeat = false
+                arrBuah[PilihBuahIndex].stok -= parseInt(InputJumlahBuah)
+
+            }
+            isRepeat = true
+        } else {
+            alert('Buah ' + arrBuah[PilihBuahIndex].nama + ' telah kadaluarsa ')
+        }
+        isRepeat = true
+    }
+
+    function AddtoCartBaju(PilihBajuIndex) {
+
+
+        MenuBaju = ''
+        PilihJumlahBaju = ('         ' + arrBaju[PilihBajuIndex].nama + '\n\n' +
+            '    harga = Rp.' + arrBaju[PilihBajuIndex].harga + '\n' +
+            '    Sisa stok  = ' + arrBaju[PilihBajuIndex].stok + '\n' +
+            '    Ukuran = ' + arrBaju[PilihBajuIndex].ukuran + '\n\n' +
+            'Input jumlah Baju ' + arrBaju[PilihBajuIndex].nama + ' Yang akan di beli')
+        InputJumlahBaju = prompt(PilihJumlahBaju)
+        if (InputJumlahBaju > arrBaju[PilihBajuIndex].stok || InputJumlahBaju == '' || InputJumlahBaju < 0) {
+            alert('Inputan anda tidak valid atau melebihi stok')
+            isRepeat = true
+        } else {
+            arrBaju[PilihBajuIndex].qty += parseInt(InputJumlahBaju)
+            isRepeat = false
+            arrBaju[PilihBajuIndex].stok -= parseInt(InputJumlahBaju)
+
+        }
+        isRepeat = true
+    }
+
+    function AddtoCartHp(PilihHpIndex) {
+
+        MenuHp = ''
+        PilihJumlahHp = ('         ' + arrHandphone[PilihHpIndex].nama + '\n\n' +
+            '    harga = Rp.' + arrHandphone[PilihHpIndex].harga + '\n' +
+            '    Sisa stok  = ' + arrHandphone[PilihHpIndex].stok + '\n' +
+            '    garansi  = ' + arrHandphone[PilihHpIndex].garansi + ' Tahun ' + '\n\n' +
+            'Input jumlah HP ' + arrHandphone[PilihHpIndex].nama + ' Yang akan di beli')
+        if (PilihHp && arrHandphone[PilihHpIndex].garansi > 0) {
+            InputJumlahHp = prompt(PilihJumlahHp)
+            if (InputJumlahHp > arrHandphone[PilihHpIndex].stok || InputJumlahHp == '' || InputJumlahHp < 0) {
+                alert('Inputan anda tidak valid atau melebihi stok')
+                isRepeat = true
+            } else {
+                arrHandphone[PilihHpIndex].qty += parseInt(InputJumlahHp)
+                isRepeat = false
+                arrHandphone[PilihHpIndex].stok -= parseInt(InputJumlahHp)
+
+            }
+            isRepeat = true
+        } else {
+            let conf = confirm('Hp ' + arrHandphone[PilihHpIndex].nama + ' hanya bergaransi ' + arrHandphone[PilihHpIndex].garansi + ' Tahun \n Apakah anda tetap ingin membelinya ?')
+            if (conf) {
+                InputJumlahHp = prompt(PilihJumlahHp)
+                if (InputJumlahHp > arrHandphone[PilihHpIndex].stok || InputJumlahHp == '' || InputJumlahHp < 0) {
+                    alert('Inputan invalid atau stok habis')
+                    isRepeat = true
+                } else {
+                    arrHandphone[PilihHpIndex].qty += parseInt(InputJumlahHp)
+                    isRepeat = false
+                    arrHandphone[PilihHpIndex].stok -= parseInt(InputJumlahHp)
+                }
+                isRepeat = true
+
+            }
+            isRepeat = true
+        }
+    }
+    function semuaCart() {
+        nota = ''
+        cartCount = 0
+        for (let i = 0; i < arrBuah.length; i++) {
+            if (arrBuah[i].qty > 0) {
+                nota += `${arrBuah[i].nama} beli ${arrBuah[i].qty} pcs \n`
+                cartCount = 1
+            }
+        }
+        for (let i = 0; i < arrBaju.length; i++) {
+            if (arrBaju[i].qty > 0) {
+                nota += `${arrBaju[i].nama} beli ${arrBaju[i].qty} pcs \n`
+                cartCount = 1
+            }
+        }
+        for (let i = 0; i < arrHandphone.length; i++) {
+            if (arrBaju[i].qty > 0) {
+                nota += `${arrHandphone[i].nama} beli ${arrHandphone[i].qty} pcs \n`
+                cartCount = 1
+            }
+        }
+        if (cartCount == 0) {
+            alert('Cart Anda Kosong')
+            MenuUtamaUser()
+        }
+        if (nota) {
+            alert(nota)
+        }
+    }
+    function totalHargaSemua() {
+        totalharga = 0
+        let totalharga_baju =0
+        let totalsemua =0
+        let totalharga_hp =0
+        for (i = 0; i < arrBuah.length; i++) {
+            totalharga += arrBuah[i].harga * arrBuah[i].qty
+        }
+
+        for (i = 0; i < arrBuah.length; i++) {
+            arrBuah[i].qty = 0
+        }
+        for (i = 0; i < arrBaju.length; i++) {
+            totalharga_baju += arrBaju[i].harga * arrBaju[i].qty
+        }
+
+        for (i = 0; i < arrBaju.length; i++) {
+            arrBaju[i].qty = 0
+        }
+        for (i = 0; i < arrHandphone.length; i++) {
+            totalharga_hp += arrHandphone[i].harga * arrHandphone[i].qty
+        }
+
+        for (i = 0; i < arrHandphone.length; i++) {
+            arrHandphone[i].qty = 0
+        }
+        totalsemua = totalharga +totalharga_baju +totalharga_hp
+        alert(totalsemua)
+        Pembayaran()
+        MenuUtamaUser()
+    }
+
+    function hargaTotalBuah() {
+        totalharga = 0
+
+        for (i = 0; i < arrBuah.length; i++) {
+            totalharga += arrBuah[i].harga * arrBuah[i].qty
+        }
+
+        for (i = 0; i < arrBuah.length; i++) {
+            arrBuah[i].qty = 0
+        }
+        alert('harga total : Rp. ' + totalharga)
+        descBuah = ''
+    }
+
+    function hargaTotalBaju() {
+        totalharga = 0
+
+        for (i = 0; i < arrBaju.length; i++) {
+            totalharga += arrBaju[i].harga * arrBaju[i].qty
+        }
+
+        for (i = 0; i < arrBaju.length; i++) {
+            arrBaju[i].qty = 0
+        }
+        alert('harga total : Rp. ' + totalharga)
+        descBaju = ''
+    }
+
+    function hargaTotalHp() {
+        totalharga = 0
+
+        for (i = 0; i < arrHandphone.length; i++) {
+            totalharga += arrHandphone[i].harga * arrHandphone[i].qty
+        }
+
+        for (i = 0; i < arrHandphone.length; i++) {
+            arrHandphone[i].qty = 0
+        }
+        alert('harga total : Rp. ' + totalharga)
+        descHp = ''
+    }
+
+    function ShowCartBuah() {
+        userCart = ''
+        cartCount = 0
+        totalharga = 0
+        for (i = 0; i < arrBuah.length; i++) {
+            totalharga += arrBuah[i].harga * arrBuah[i].qty
+        }
+        descBuah = ''
+        for (i = 0; i < arrBuah.length; i++) {
+            if (arrBuah[i].qty > 0) {
+                descBuah += ('- ' + arrBuah[i].nama +
+                    ' Sebanyak : ' + arrBuah[i].qty +
+                    ' kadaluarsa tanggal : ' + arrBuah[i].kadaluarsa +
+                    ' dengan harga : ' + arrBuah[i].harga * arrBuah[i].qty + '\n')
+                cartCount = 1
+
+            }
+
+            if (cartCount == 0 && i == arrBuah.length - 1) {
+                alert('Cart anda kosong')
+            }
+        }
+        alert(descBuah + '\nTotal yang dibeli : ' + totalharga)
+        descBuah = ''
+        menuBuah = ''
+        isRepeat = true
+    }
+
+    function ShowCartBaju() {
+        userCart = ''
+        cartCount = 0
+        totalharga = 0
+        for (i = 0; i < arrBaju.length; i++) {
+            totalharga += arrBaju[i].harga * arrBaju[i].qty
+        }
+        descBaju = ''
+        for (i = 0; i < arrBaju.length; i++) {
+            if (arrBaju[i].qty > 0) {
+                descBaju += ('- ' + arrBaju[i].nama +
+                    ' Sebanyak : ' + arrBaju[i].qty +
+                    ' Ukuran : ' + arrBaju[i].ukuran +
+                    ' dengan harga : ' + arrBaju[i].harga * arrBaju[i].qty + '\n')
+                cartCount = 1
+
+            }
+
+            if (cartCount == 0 && i == arrBaju.length - 1) {
+                alert('Cart anda kosong')
+            }
+        }
+        alert(descBaju + '\nTotal yang dibeli : ' + totalharga)
+        descBaju = ''
+        menuBaju = ''
+        isRepeat = true
+    }
+
+    function ShowCartHp() {
+        userCart = ''
+        cartCount = 0
+        totalharga = 0
+        for (i = 0; i < arrHandphone.length; i++) {
+            totalharga += arrHandphone[i].harga * arrHandphone[i].qty
+        }
+        descHp = ''
+        for (i = 0; i < arrHandphone.length; i++) {
+            if (arrHandphone[i].qty > 0) {
+                descHp += ('- ' + arrHandphone[i].nama +
+                    ' Sebanyak : ' + arrHandphone[i].qty +
+                    ' garansi : ' + arrHandphone[i].garansi + ' Tahun ' +
+                    ' dengan harga : ' + arrHandphone[i].harga * arrHandphone[i].qty + '\n')
+                cartCount = 1
+
+            }
+
+            if (cartCount == 0 && i == arrHandphone.length - 1) {
+                alert('Cart anda kosong')
+            }
+        }
+        alert(descHp + '\nTotal yang dibeli : ' + totalharga)
+        descHp = ''
+        menuHp = ''
+        isRepeat = true
+    }
+    function deleteItem(deleteItemIndex) {
+
+        for (let i = 0; i < arrBuah.length; i++) {
+            if (arrBuah[i].nama.toLowerCase() == deleteItemIndex.toLowerCase()) {
+                arrBuah.splice(i, 1)
+                alert(`Berhasil hapus`)
+                return
+            }
+        }
+        alert('Data tidak ada')
+
+        for (let i = 0; i < arrBaju.length; i++) {
+            if (arrBaju[i].nama.toLowerCase() == deleteItemIndex.toLowerCase()) {
+                arrBaju.splice(i, 1)
+                alert('Berhasil hapus')
+                return
+            }
+
+        }
+        alert('Data tidak ada')
+
+        for (let i = 0; i < arrHandphone.length; i++) {
+            if (arrHandphone[i].nama.toLowerCase() == deleteItemIndex.toLowerCase()) {
+                arrHandphone.splice(i, 1)
+                alert('Berhasil hapus')
+                return
+            }
+        }
+        alert('Data tidak ada')
+    }
+
+    function addItem() {
+        let choose_add = prompt('1. Add Buah \n2. Add Baju \n3. Add HP \n4. Kembali')
+        if (choose_add == 1) {
+            arrBuah.push({
+                nama: prompt('Masukan nama Buah'),
+                stok: parseInt(prompt('Masukan Jumlah stok')),
+                harga: parseInt(prompt('Masukan harga Buah')),
+                qty: 0,
+                kadaluarsa: (prompt('Masukan Tanggal kadaluarsa'))
+            })
+        } else if (choose_add == 2) {
+            arrBaju.push({
+                nama: prompt('Masukan nama Baju'),
+                stok: parseInt(prompt('Masukan Jumlah stok')),
+                harga: parseInt(prompt('Masukan harga Baju')),
+                qty: 0,
+                ukuran: prompt('Masukan ukuran baju')
+            })
+        } else if (choose_add == 3) {
+            arrHandphone.push({
+                nama: prompt('Masukan nama HP'),
+                stok: parseInt(prompt('Masukan jumlah stok')),
+                harga: parseInt(prompt('Masukan harga hp')),
+                qty: 0,
+                garansi: prompt('Masukan ketentuan garansi')
+            })
+        } else if (choose_add == 4) {
+            MenuUtamaAdmin()
+        }
+    }
+
+    function MenuUtamaUser() {
+        let choose = prompt('1. Etalase Buah \n2. Etalase Pakaian \n3. Etalase Hp \n4. Keranjang \n5. checkout')
+        if (choose == 1) {
+            MenuBuah()
+            isRepeat = true
+        } else if (choose == 2) {
+            MenuBaju()
+            isRepeat = true
+        } else if (choose == 3) {
+            MenuHp()
+            isRepeat = true
+        } else if (choose == 4) {
+            semuaCart()
+        } else if (choose == 5) {
+            totalHargaSemua()
+        }
+    }
+
+    function MenuUtamaAdmin() {
+        let choose = prompt(' 1. Tambah Item \n 2. Hapus Item \n 3. Show Menu \n 4. Exit')
+        if (choose == 1) {
+            addItem()
+        } else if (choose == 2) {
+            let choose_delete = prompt('1. Hapus Buah \n2. Hapus Baju \n3. Hapus HP \n4. Kembali')
+            if (choose_delete == 1) {
+                let deleteItemIndex = prompt(MenuTulisanBuah(false));
+                deleteItem(deleteItemIndex)
+                isRepeat = true
+            } else if (choose_delete == 2) {
+                let deleteItemIndex = prompt(MenuTulisanBaju(false))
+                deleteItem(deleteItemIndex)
+                isRepeat = true
+            } else if (choose_delete == 3) {
+                let deleteItemIndex = prompt(MenuTulisanHp(false))
+                deleteItem(deleteItemIndex)
+                isRepeat = true
+            } else if (choose_delete == 4) {
+                MenuUtamaAdmin()
+            }
+
+        } else if (choose == 3) {
+            MenuLogin()
+        } else if (choose == 4) {
+            return
+        }
+    }
+
+    function MenuLogin() {
+        do {
+            adminUser = prompt(`=== Login Sebagai ===\n1. User \n2. Admin \n3. Exit`)
+
+            if (adminUser == 1) {
+                MenuUtamaUser()
+                isRepeat = false
+
+            } else if (adminUser == 2) {
+                MenuUtamaAdmin()
+                isRepeat = true
+            }
+        } while (isRepeat)
+    }
+
+    function MenuAwalBuah() {
+        menuBuah = ''
+        for (i = 0; i < arrBuah.length; i++) {
+            menuBuah += (i + 1 + '. Buah ' + arrBuah[i].nama + '-- harga = Rp.' + arrBuah[i].harga + '\n' +
+                '    Stok   = ' + arrBuah[i].stok + '\n' +
+                '    Tanggal kadaluarsa= ' + arrBuah[i].kadaluarsa + '\n\n')
+        }
+        menuBuah += (arrBuah.length + 1) + '.Checkout\n'
+        menuBuah += (arrBuah.length + 2) + '.Keranjang'
+        return menuBuah
+    }
+
+    function MenuAwalBaju() {
+        menuBaju = ''
+        for (i = 0; i < arrBaju.length; i++) {
+            menuBaju += (i + 1 + '. Jenis Baju : ' + arrBaju[i].nama + '-- harga = Rp.' + arrBaju[i].harga + '\n' +
+                '    Ukuran baju =   ' + arrBaju[i].ukuran + '\n' +
+                '    Stok = ' + arrBaju[i].stok + '\n\n')
+        }
+        menuBaju += (arrBaju.length + 1) + '.Checkout\n'
+        menuBaju += (arrBaju.length + 2) + '.Keranjang'
+        return menuBaju
+    }
+
+    function MenuAwalHp() {
+        menuHp = ''
+        for (i = 0; i < arrHandphone.length; i++) {
+            menuHp += (i + 1 + '. HP = ' + arrHandphone[i].nama + '-- harga = Rp.' + arrHandphone[i].harga + '\n' +
+                '    Masa garansi=   ' + arrHandphone[i].garansi + ' Tahun ' + '\n' +
+                '    Sisa stok  = ' + arrHandphone[i].stok + '\n\n')
+        }
+        menuHp += (arrHandphone.length + 1) + '.Checkout\n'
+        menuHp += (arrHandphone.length + 2) + '.Keranjang'
+        return menuHp
+    }
+
+    function MenuTulisanBuah() {
+        menuBuah = ''
+        for (i = 0; i < arrBuah.length; i++) {
+            menuBuah += (i + 1 + '. Buah ' + arrBuah[i].nama + '-- harga = Rp.' + arrBuah[i].harga + '\n' +
+                '    Sisa stok  = ' + arrBuah[i].stok + '\n' +
+                '    Tanggal kadaluarsa = ' + arrBuah[i].kadaluarsa + '\n\n')
+        }
+        return menuBuah
+    }
+
+    function MenuTulisanBaju() {
+        menuBaju = ''
+        for (let i = 0; i < arrBaju.length; i++) {
+            menuBaju += (i + 1 + '. Jenis Baju = ' + arrBaju[i].nama + '--harga = Rp.' + arrBaju[i].harga + '\n' +
+                '    Ukuran =   ' + arrBaju[i].ukuran + '\n' +
+                '    Sisa stok  = ' + arrBaju[i].stok + '\n\n')
+
+        }
+        return menuBaju
+
+    }
+
+    function MenuTulisanHp() {
+        menuHp = ''
+        for (i = 0; i < arrHandphone.length; i++) {
+            menuHp += (i + 1 + '. HP = ' + arrHandphone[i].nama + ' harga = Rp.' + arrHandphone[i].harga + '\n' +
+                '    garansi =   ' + arrHandphone[i].garansi + ' Tahun ' + '\n' +
+                '    Sisa stok  = ' + arrHandphone[i].stok + '\n\n')
+        }
+        return menuHp
+
+    }
+
+
+
+
+    MenuLogin()
+
+    function MenuBuah() {
+        do {
+            MenuAwalBuah()
+            PilihBuah = prompt('Macam-Macam Buah' + '\n' + menuBuah + '\n' + '6. Exit')
+            PilihBuahIndex = PilihBuah - 1
+            if (PilihBuah == arrBuah.length + 1) {
+                hargaTotalBuah()
+                Pembayaran()
+            } else if (PilihBuah == arrBuah.length + 2) {
+                ShowCartBuah()
+            } else if (PilihBuah == arrBuah.length + 3) {
+                MenuUtamaUser()
+            } else {
+                AddtoCartBuah(PilihBuahIndex)
+            }
+        }
+        while (isRepeat)
+    }
+
+    function MenuBaju() {
+        do {
+            MenuAwalBaju()
+            PilihBaju = prompt('Macam-Macam Baju' + '\n' + menuBaju + '\n (next number) Exit')
+            PilihBajuIndex = PilihBaju - 1
+            if (PilihBaju == arrBaju.length + 1) {
+                hargaTotalBaju()
+                Pembayaran()
+            } else if (PilihBaju == arrBaju.length + 2) {
+                ShowCartBaju()
+
+            } else if (PilihBaju == arrBaju.length + 3) {
+                MenuUtamaUser()
+            } else {
+                AddtoCartBaju(PilihBajuIndex)
+            }
+        }
+        while (isRepeat)
+    }
+
+    function MenuHp() {
+        do {
+            MenuAwalHp()
+            PilihHp = prompt('Macam-Macam HP' + '\n' + menuHp + '\n (next number menu) exit')
+            PilihHpIndex = PilihHp - 1
+            if (PilihHp == arrHandphone.length + 1) {
+                hargaTotalHp()
+                Pembayaran()
+            } else if (PilihHp == arrHandphone.length + 2) {
+                ShowCartHp()
+            } else if (PilihHp == arrHandphone.length + 3) {
+                MenuUtamaUser()
+            } else {
+                AddtoCartHp(PilihHpIndex)
+            }
+        }
+        while (isRepeat)
+    }
+
+// </script>
+
+//
+
+</html>

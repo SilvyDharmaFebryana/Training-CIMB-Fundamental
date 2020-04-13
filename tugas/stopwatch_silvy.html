@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+
+<body>
+
+    <style>
+        .stopwatch {
+            border: 5px double;
+        }
+
+        .button {
+            padding: 3px 16px;
+            background-color: lightgrey
+        }
+    </style>
+
+
+
+    <h2>
+        <center>--- STOPWATCH ---</center>
+    </h2>
+    <h1 class="stopwatch">
+        <center>
+            <span id="hour">00</span> :
+            <span id="min">00</span> :
+            <span id="sec">00</span> :
+            <span id="milisec">00</span>
+        </center>
+    </h1>
+    <div>
+        <center>
+            <button class="button" onclick="start()" id="start">Start</button>
+            <button class="button" onclick="stop()">Stop</button>
+            <button class="button" onclick="reset()">Reset</button>
+            <button class="button" onclick="lap()">Lap</button>
+        </center>
+    </div>
+    <center>
+        <p id="lapStopwatch"></p>
+    </center>
+
+
+</body>
+<script>
+
+    let jam = 0
+    let menit = 0
+    let detik = 0
+    let milidetik = 0
+    let hasilJam = 0
+    let hasilMenit = 0
+    let hasilDetik = 0
+    let hasilMilidetik = 0
+    let intStopwatch
+
+    const tambahNol = (val) => {
+        if (val < 10) {
+            val = "0" + val;
+        }
+        return val;
+    }
+
+    const stopwatch = () => {
+
+        hasilJam = tambahNol(jam)
+        hasilMenit = tambahNol(menit)
+        hasilDetik = tambahNol(detik)
+        hasilMilidetik = tambahNol(milidetik)
+
+        document.getElementById("milisec").innerHTML = hasilMilidetik;
+        milidetik++
+        document.getElementById("sec").innerHTML = hasilDetik;
+        document.getElementById("min").innerHTML = hasilMenit;
+        document.getElementById("hour").innerHTML = hasilJam;
+
+        if (milidetik == 100) {
+            milidetik = 0;
+            detik = ++detik;
+        }
+
+        if (detik == 60) {
+            detik = 0;
+            menit = ++menit;
+        }
+
+        if (menit == 60) {
+            menit = 0;
+            jam = ++jam;
+        }
+
+
+    }
+
+    const start = () => {
+        intStopwatch = setInterval(stopwatch, 10)
+    }
+
+    const stop = () => {
+        clearInterval(intStopwatch)
+    }
+
+    const reset = () => {
+        
+        jam = 0
+        menit = 0
+        detik = 0
+        milidetik = 0
+
+        document.getElementById("milisec").innerHTML = "00";
+        document.getElementById("sec").innerHTML = "00";
+        document.getElementById("min").innerHTML = "00";
+        document.getElementById("hour").innerHTML = "00";
+        document.getElementById("lapStopwatch").innerHTML = ''
+
+    }
+
+    const lap = () => {
+        document.getElementById("lapStopwatch").innerHTML += `${hasilJam} : ${hasilMenit} : ${hasilDetik} : ${hasilMilidetik} <br>`
+    }
+
+
+
+
+</script>
+
+</html>

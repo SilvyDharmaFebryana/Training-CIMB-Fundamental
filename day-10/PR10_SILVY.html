@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+        <style>
+            table,
+            th,
+            td {
+                border: 3px solid black;
+                border-collapse: collapse;
+                text-align: center;
+            }
+
+            th,
+            td {
+                padding: 5px;
+            }
+        </style>
+        <table id="myTable" align="center">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Nama</th>
+                    <th>Pekerjaan</th>
+                    <th onclick="sortTable(2)">Umur</th>
+                    <th>Picture</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="mainData">
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td><input id="inputNama" type="text" placeholder="Input Nama" required></td>
+                    <td><input id="inputPekerjaan" type="text" placeholder="Input Pekerjaan" required></td>
+                    <td><input id="inputUmur" type="number" placeholder="Input Umur" required></td>
+                    <td><input id="inputPicture" type="text" placeholder="Picture Link" required></td>
+                    <td><input id="submitBtn" type="submit" value="Submit" onclick="addData()"></td>
+                </tr>
+            </tfoot>
+        </table>
+<h3 id = "formWarning"></h3>
+<h3 id = "tabelKosong"></h3>
+</body>
+</center>
+
+<script>
+    class Orang {
+        constructor(nama, pekerjaan, umur, picture) {
+            this.nama = nama
+            this.pekerjaan = pekerjaan
+            this.umur = umur
+            this.picture = picture
+        }
+    }
+
+
+    let dataOrang = [
+        new Orang('nini', 'tukang tidur', 26, 'https://1.bp.blogspot.com/-obg6bsuiOSA/TyXdmswBSMI/AAAAAAAAAes/bG_UfHkwwMQ/s1600/white-angry-birds.png'),
+        new Orang('nana', 'tukang masak', 20, 'https://vignette.wikia.nocookie.net/angrybirds/images/3/33/20130404-matilda..png/revision/latest/scale-to-width-down/340?cb=20130407201510&path-prefix=es'),
+        new Orang('nunu', 'tukang marah', 24, 'https://i.pinimg.com/originals/1b/2e/39/1b2e39300f11dc11894fa75b7dbba43e.png'),
+        new Orang('baba', 'tukang makan', 33, 'https://3.bp.blogspot.com/-kY5nfqDjhxM/T0hOSdDixxI/AAAAAAAAAOM/R4-35Y7cT1c/s1600/1.png')
+    ]
+
+
+    //===== Menampilkan Data =====
+    const renderData = () => {
+        let hasil = ''
+        dataOrang.forEach(({ nama, pekerjaan, umur, picture }, idx) => {
+            hasil += `
+            <tr>
+                <td> ${nama} </td>
+                <td> ${pekerjaan} </td>
+                <td> ${umur} </td>
+                <td><img src = ${picture} width="100px" required></td>
+                <td><input type="button" value="Delete" onclick="deleteData(${idx})" required></td> 
+            </tr> `
+        })
+        document.getElementById("mainData").innerHTML = hasil
+
+    }
+
+    renderData()
+
+    //===== tambah data ====
+    const addData = () => {
+        let inputNama = document.getElementById("inputNama").value
+        let inputPekerjaan = document.getElementById("inputPekerjaan").value
+        let inputUmur = document.getElementById("inputUmur").value
+        let inputPicture = document.getElementById("inputPicture").value
+
+        let newData = new Orang(inputNama, inputPekerjaan, inputUmur, inputPicture)
+        let ulang
+
+        if (inputNama == false || inputPekerjaan == false || inputUmur == false || inputPicture == false) {
+            alert('Data ada yang kosong')
+        } else {
+            dataOrang.push(newData)
+            alert('Data ditambahkan')
+            renderData()
+            document.getElementById("tabelKosong").innerHTML = ''
+            inputNama = document.getElementById("inputNama").value = ''
+            inputPekerjaan = document.getElementById("inputPekerjaan").value = ''
+            inputUmur = document.getElementById("inputUmur").value = ''
+            inputPicture =  document.getElementById("inputPicture").value = ''
+        }
+    }
+
+
+    //===== delete data =====
+    const deleteData = (deleteIndex) => {
+        dataOrang.splice(deleteIndex, 1)
+        renderData()
+        alert('data dihapus')
+        if (dataOrang == 0){
+            document.getElementById("tabelKosong").innerHTML = `Data Kosong`
+        } else {
+            document.getElementById("tabelKosong").innerHTML = ``
+        }
+     
+    }
+
+
+    //===== sort =====
+    function sortTable(n){
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("mainData");
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+</script>
+
+</html>

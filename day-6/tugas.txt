@@ -1,0 +1,22 @@
+class= cetakan yang menghasilkan sebuah objek
+
+function adalah ... .... ... 
+
+=============================================================================================
+untuk tugas :
+
+semua menu di jadikan function
+
+di dalam (do) dijadikan function
+
+keranjang harus di masukkan kedalam function juga
+dan pas tambah item dijadiin function juga 
+
+==============================================================================================
+
+
+let string = 'saya suka jeruk dan karena saya suka jeruk maka saya tidak suka apel'
+tampilkan yang peling banyak muncul,
+dan tampilkan yang paling banyak keluar 
+memakai .split berdasarkan spasi
+

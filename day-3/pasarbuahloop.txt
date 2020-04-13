@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+//harga buah
+let hargaleci = 2000
+let hargamangga = 3000
+let hargajeruk = 4000
+let hargaapel = 5000
+
+//stock buah
+let stockleci = 10
+let stockmangga = 10
+let stockjeruk = 10
+let stockapel = 10
+
+// kondisi
+let conditionbuah = true
+
+var tanya
+
+
+
+while(conditionbuah){
+alert(`STOCK BUAH DI PASAR BUAH LOOP
+ Buah Leci ${stockleci}/biji dengan harga Rp ${hargaleci} ,-
+ Buah Mangga ${stockmangga}/biji dengan harga Rp ${hargamangga} ,-
+ Buah Jeruk ${stockjeruk}/biji dengan harga Rp ${hargajeruk} ,-
+ Buah Apel ${stockapel}/biji dengan harga Rp ${hargaapel} ,-`)
+
+let leci = parseInt(prompt('Masukkan jumlah leci yang ingin anda beli'))
+if (leci > stockleci) {
+    alert('stock kurang')
+    conditionbuah= true
+} else 
+{   stockleci -= leci
+    let mangga = parseInt(prompt('Masukkan jumlah mangga yang ingin anda beli'))
+    if (mangga > stockmangga){
+    alert('stock kurang')
+    conditionbuah= true 
+    } else 
+    {  
+        stockmangga -= mangga
+        let jeruk = parseInt(prompt('Masukkan jumlah jeruk yang ingin anda beli'))
+        if (jeruk > stockjeruk){
+        alert('stock kurang')
+        conditionbuah= true
+        } else 
+        { 
+            stockjeruk -= jeruk
+            let apel = parseInt(prompt('Masukkan jumlah apel yang ingin anda beli'))
+            if (apel > stockapel){
+            alert('Stock kurang')
+            conditionbuah = true
+            } else {
+                stockapel -= apel
+                let condition = true
+                while(condition) {
+                let total = (leci*hargaleci) + (mangga*hargamangga) + (jeruk*hargajeruk) + (apel*hargaapel)
+                alert('Total belanjaan anda: Rp' + total)
+                let uang = prompt('masukkan jumlah uang') 
+                
+               // while(condition) {
+                    if (total > uang) {
+                        alert('Mohon maaf uang anda kurang')
+                        condition = true
+                        } else if(total < uang) {
+                            alert('Kembalian anda : Rp' + (uang - total))
+                            condition = false
+                            // var udahan = confirm('apakah ingin berbelanja lagi?')
+                            // if (udahan == true) {
+                            //     udahan = true 
+                            //     conditionbuah = true
+                            // } else {
+                            //     alert('Terimakasih atas kunjungannya')
+                            //     conditionbuah = false
+                            // }
+                            confirm('apakah anda ingin berbelanja lagi?')
+                            // if (stockapel == 0 && stockleci == 0 && stockmangga == 0 && stockjeruk == 0 ) {
+                            //     tanya = false
+                            //     alert('Semua Stock udah abis, terimaksih')
+                            
+                    } else {
+                         alert('Terimakasih atas kunjungannya')
+                         condition = false
+                    //      if (stockapel == 0 && stockleci == 0 && stockmangga == 0 && stockjeruk == 0 ) {
+                    //             tanya = false
+                    //             alert('Semua Stock udah abis, terimaksih')
+                    //    //  confirm('apakah anda ingin berbelanja lagi?')
+                        
+                         }
+                    }
+            }
+        }
+                }
+            }
+        }
+//}
+//}
+//}
+//}
+//}
+
+
+</script>
+</html>

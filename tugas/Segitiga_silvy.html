@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+
+body{
+    margin: 35px
+}
+</style>
+
+<body>
+    <h1>Drawing Tools</h1>
+    <ol id=bangunan>
+        <li>Persegi</li>
+        <li>Segitiga siku-siku rata kiri</li>
+        <li>Segitiga siku-siku rata kanan</li>
+    </ol>
+    <p> Jenis Bangunan <br>
+        <br>
+        <input type="text" name="jenisBangunan" id="jenis" >
+    </p>
+    <p>
+        Ukuran <br>
+        <br>
+        <input type="text" name="Ukuran" id="ukuran">
+    </p>
+    <p><input type="button" name="lihat" id="lihat" value="Lihat" onclick="bangunan()"></p>
+
+    <div id="bentukBangunan"></div>
+    <div id="none"></div>
+
+</body>
+<script>
+
+    const kosong = () => {
+        document.getElementById("jenis").value = ''
+        document.getElementById("ukuran").value = ''
+    }
+
+    const bangunan = () => {
+        let inputBangunan = document.getElementById("jenis").value
+        let input = document.getElementById("ukuran").value
+
+        if (inputBangunan == 1) {
+            let persegi = ''
+            for (let i = 0; i < input; i++) {
+
+                for (let j = 0; j < input; j++) {
+                    persegi += '*'
+                }
+                persegi += "\n"
+            }
+            console.log(persegi)
+            kosong()
+            document.getElementById("none").innerHTML = ' '
+
+        } else if (inputBangunan == 2) {
+            let segitigaRataKiri = ''
+
+            for (let i = 1; i <= input; i++) {
+                for (let j = 1; j <= i; j++) {
+                    segitigaRataKiri += "*"
+                }
+                segitigaRataKiri += "\n"
+            }
+            console.log(segitigaRataKiri)
+            kosong()
+            document.getElementById("none").innerHTML = ' '
+
+        } else if (inputBangunan == 3) {
+            let segitigaRataKanan = ''
+
+            for (let i = 0; i < input; i++) {
+                for (let k = input; k > i; k--) {
+                    segitigaRataKanan += ' '
+                }
+                segitigaRataKanan += '*'
+                for (let j = 0; j < i; j++) {
+                    segitigaRataKanan += '*'
+                }
+                segitigaRataKanan += '\n'
+            }
+            console.log(segitigaRataKanan) 
+            kosong()
+            document.getElementById("none").innerHTML = ' '
+
+        } else {
+            if (inputBangunan !== 1 || 2 || 3) {
+                document.getElementById("none").innerHTML = "<h2><center>Pilihan Tidak Ada !!</center></h2>"
+                document.getElementById("bentukBangunan").innerHTML = ''
+                kosong()
+            }
+        }
+    }
+
+
+
+
+</script>
+
+</html>

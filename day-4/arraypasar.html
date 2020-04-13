@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+let arrBuah = ['jeruk', 'apel', 'mangga']
+let arrStock = [10, 20, 15]
+let arrHarga = [2000, 5000, 7000]
+let arrBuahInput = [0, 0, 0]
+let semua = '' 
+let inputUserMenu
+let inputUserIndex
+let inputUserQty
+let isRepeat
+let userPayment
+let total
+
+// let jeruk
+// let apel
+// let mangga
+
+var ulang
+
+
+
+do {
+
+    semua=''
+
+    for (var i=0 ; i < arrHarga.length ; i++ ){
+        semua += `${i + 1}.  + ${arrStock[i]} + '/pcs ' + 'Rp' + ${arrHarga[i]} + '\n'`
+    
+    }  
+
+    semua += `${arrBuah.length + 1}. Checkout`
+
+    inputUserMenu = prompt(menu)
+    inputUserIndex = inputUserMenu - 1
+
+    if (inputUserMenu == arrBuah.length + 1) {
+        //transaksi
+        total = 0
+        for (let i=0 ; i < arrBuah.length ; i++) {
+            total += arrHarga[i] * arrBuahInput[i]
+        }
+
+        do{
+            userPayment = prompt(`total belanjaan anda adalah ${total}`)
+
+            if (userPayment > total) {
+                alert(`kembalian anda adalah ${userPayment - total}`)
+                isRepeat =  false
+            } else if (userPayment < total) {
+                alert(`uang anda kurang ${total - userpayment}`)
+                isRepeat =  true
+            } else if (userPayment = total) {
+                alert(`terimakasih sudah membayar`)
+                isRepeat = false
+            }
+        } while(isRepeat)
+
+        for (let i = 0; i<arrBuahInput.length; i++){
+            arrStock[i] -= arrBuahInput[i]
+            arrBuahInput[i] = 0
+        } 
+        isRepeat =  confirm('bELANJA LAGI?')
+        
+    } else {
+
+        do{
+            inputUserQty = prompt (`Masukkan jumlah buah ${arrBuah[inputUserIndex]} ? `)
+
+            if (arrStock[inputUserIndex] >= parseint(inputUserQty + arrBuahInput[inputUserIndex] )) {
+                arrBuahInput[inputUserIndex] += inputUserQty
+
+            } else {
+                alert(`stock ${arrBuah[inputUserIndex]} tidak cukup`)
+                isRepeat = true
+            }   
+        } while(isRepeat)
+        
+        isRepeat =  true
+
+    }
+   
+
+} while(isRepeat)
+
+
+
+</script>
+</html>

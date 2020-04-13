@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+class Produk {
+    constructor(nama, price, stock) {
+        this.nama = nama
+        this.price = price
+        this.stock = stock
+        this.input = 0
+    }
+}
+
+class Buah extends Produk {
+    constructor(nama, price, stock, expired) {
+        super(nama, price, stock)
+        this.expired = expired
+    }
+}
+
+class Handphone extends Produk {
+    constructor(nama, price, stock, warranty) {
+        super(nama, price, stock)
+        this.warranty = warranty
+    }
+}
+
+class Baju extends Produk {
+    constructor(nama, price, stock, size) {
+        super(nama, price, stock)
+        this.size = size
+    }
+}
+
+let arrItemsNames = ['Etalase Buah', 'Etalase Baju', 'Etalase Handphone']
+//var tanggalExpired = new Date()
+let arrItems = [[
+new Buah ('Mangga', 2000, 10, '20-02-2020'),
+new Buah ('Apel', 3000, 10, '20-04-2020'),
+new Buah ('Jeruk', 4000, 10, '01-03-2029')
+],[
+new Baju ('Kaos', 100000, 10, 's'),
+new Baju ('Kemeja', 105000, 10, 'm'),
+new Baju ('Oblong', 110000, 10, 'l')
+],[
+new Handphone ('Oppo', 3000000, 10, 0),
+new Handphone ('Samsung', 4500000, 10, 1),
+new Handphone ('Vivo', 2000000, 10, 0)
+]]
+
+let inputUserMenu;
+let inputUserMenuIndex;
+let inputAdminMenu;
+let inputListMenu
+let inputListMenuIndex
+let inputUserQty;
+let isRepeat;
+let totalPrice;
+let userPayment;
+let cartCount;
+let userCart = "";
+
+let newItem;
+let menuItemList
+let menu = "";
+
+
+
+
+// var year = tanggals.getFullYear()
+// var month = tanggals.getMonth()
+// var date = tanggals.getDate()
+
+//  var tanggal = (date + '-' + month + '-'+ year).split('-')
+//t var tanggal = 
+// let arrTanggal = new date(tanggal)
+
+
+
+function showMenu(isUser) {
+  menu = "";
+
+  for (let i = 0; i < arrItemsNames.length; i++) {
+  menu += `${i + 1}. ${arrItemsNames[i]}\n`
+  }
+    if (isUser) {
+        menu += `${arrItemsNames.length + 1}. Keranjang Belanjaan\n`;
+        menu += `${arrItemsNames.length + 2}. Checkout\n`;
+        menu += `${arrItemsNames.length + 3}. Logout\n`;
+    }
+    return menu;
+}
+
+function showItemList(index){
+    menuItemList = ''
+    for (let i = 0; i < arrItems[index].length; i++) {
+    menuItemList += `${i + 1}. ${arrItems[index][i].nama} - Harga Rp. ${arrItems[index][i].price} - Stock ${arrItems[index][i].stock} Pcs\n`
+    } 
+    return menuItemList
+}
+
+
+function showCart() {
+    userCart = "";
+    cartCount = 0;
+    for (let i = 0; i < arrItems.length; i++) {
+        for (let j = 0 ; j<arrItems[i].length ; j++)
+            if (arrItems[i][j].input > 0) {
+            userCart += `${arrItems[i][j].input} ${arrItems[i][j].nama} dibeli dengan harga ${arrItems[i][j].price}/pcs\n`;
+            }
+        }
+    if (userCart) {
+      userCart += `\n Total Belanjaan : IDR ${calculateTotalPrice()}`
+      alert(userCart)
+    } else {
+      alert("Keranjang Belanja anda kosong")
+    }
+}
+
+function calculateTotalPrice() {
+    totalPrice = 0;
+      for (let i = 0; i < arrItems.length; i++) {
+          for (let j = 0 ; j < arrItems[i].length ; j++) {
+            totalPrice += arrItems[i][j].input * arrItems[i][j].price
+          }
+        
+      }
+      return totalPrice
+}
+    
+function bayarBelanjaan(){
+    userPayment = prompt(`Total harga = ${totalPrice}`);
+        if (userPayment > totalPrice) {
+            alert(`Kembalian anda ${userPayment - totalPrice}`);
+        } else if (userPayment < totalPrice) {
+            alert(`Uang anda kurang ${totalPrice - userPayment}`);
+        } else if (userPayment == totalPrice) {
+            alert("Terima kasih sudah membayar dengan uang pas");
+        }
+}
+    
+        
+
+function addToCart(index1, index2) {
+  
+    inputUserQty = parseInt(prompt(`Mau beli berapa ${arrItems[index1][index2].nama}`));
+
+    var tanggals = new Date()
+    var tanggal = (arrItems[index1][index2].expired).split('-')
+    var dateExpired = new Date(tanggal[2], tanggal[1]-1, tanggal[0])
+
+      if (arrItems[index1][index2].stock >= inputUserQty + arrItems[index1][index2].input) {
+        arrItems[index1][index2].input += inputUserQty;
+      } else {
+        alert(`Stock ${arrItems[index1][index2].nama} tidak mencukupi`);
+      }
+      if (arrItems[index1][index2].warranty == 0){
+          isRepeat = confirm(`${arrItems[index1][index2].nama} Tidak ada garansi, apakah ingin lanjut beli?`)
+      }
+      if (dateExpired <= tanggals){
+          isRepeat = alert(`${arrItems[index1][index2].nama} Sudah kadaluarsa`)
+      }
+  isRepeat =  true
+}
+
+function createNewItem(produk, harga, stock) {
+      return {
+        produk,
+        harga,
+        stock,
+        qty: 0
+      };
+}
+
+function addBuah(){
+    arrItems[0].push(new Buah(
+        prompt('Masukkan Nama Buah'),
+        prompt('Masukkan harga Buah'),
+        prompt('Masukkan stock Buah'),
+        input = 0,
+        prompt('Masukkan tanggal expired Buah')))
+}
+
+function addBaju(){
+    arrItems[1].push(new Baju(
+        prompt('Masukkan Nama Baju'),
+        prompt('Masukkan harga Baju'),
+        prompt('Masukkan stock Baju'),
+        input = 0,
+        prompt('Masukkan size baju')))
+}
+
+function addHandphone(){
+    arrItems[2].push(new Baju(
+        prompt('Masukkan Nama hp'),
+        prompt('Masukkan harga hp'),
+        prompt('Masukkan stock hp'),
+        input = 0,
+        prompt('apakah ada garansi?')))
+}
+
+function deleteItem(index){
+        index -= 1
+        let itemName
+        if(index < arrItems.length && index >= 0){
+            itemName = arrItems[index].nama
+            arrItems.splice(index, 1)
+            alert(itemName + 'telah di hapus')
+        } else {
+            alert('pilihan tidak valid')
+        }
+       
+}
+
+do {
+  let inputMainMenu = prompt(`===Login===\n\n1. User\n2. Admin\n3. Exit\n`);
+
+  if (inputMainMenu == 1) {
+    do {
+       // User Menu
+      inputUserMenu = prompt(showMenu(true));
+      inputUserMenuIndex = inputUserMenu - 1;
+
+      if (inputUserMenu == arrItemsNames.length + 1) {
+          showCart();
+      } else if (inputUserMenu == arrItemsNames.length + 2) {
+          calculateTotalPrice()
+          bayarBelanjaan()
+      } else if (inputUserMenu < arrItemsNames.length + 1) {
+          inputListMenu = prompt(showItemList(inputUserMenuIndex));
+          inputListMenuIndex = inputListMenu - 1;
+          addToCart(inputUserMenuIndex, inputListMenuIndex);
+      } else if(inputUserMenu == arrItemsNames.length + 3) {
+          isRepeat = true
+      }
+
+      isRepeat = confirm("Lanjutkan belanja ?")
+      
+      isRepeat = true
+    } while (isRepeat);
+
+
+  } else if (inputMainMenu == 2) {
+    do {
+      // Admin Menu
+      inputAdminMenu = prompt(`1. Add Item\n2. Delete Item\n3. Show Menu\n4. Logout`)
+
+    if (inputAdminMenu == 1) {
+        addItemAdmin = prompt(`1. Add Buah\n2. Add baju\n3. Add Handphone\n4.Cancel`)
+        if (addItemAdmin == 1){
+            addBuah()
+        } else if (addItemAdmin == 2){
+            addBaju()
+        } else if(addItemAdmin == 3){
+            addHandphone()
+        } else{
+            isRepeat = true
+        }
+        
+    } else if (inputAdminMenu == 2) {
+        let deleteItemIndex = prompt(showMenu(false))
+        deleteItem(deleteItemIndex)
+        isRepeat = true
+
+    } else if (inputAdminMenu == 3) {
+            alert(showItemList(inputUserMenuIndex));
+      } else if (inputAdminMenu == 4) {
+            break;
+      }
+    } while (isRepeat);
+
+
+  } else if (inputMainMenu == 3) {
+    break
+
+  } else{
+    alert('Akun yang anda pilih tidak valid')
+    isRepeat = true
+  }
+
+
+isRepeat = true
+
+} while (isRepeat);
+
+
+</script>
+</html>

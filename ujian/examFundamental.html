@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+​
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+​
+<body>
+​
+</body>
+<script>
+​
+    let arrData = []
+    let isRepeat = true
+    let car = ''
+    let tampung =''
+    // let array=[]
+    do {
+        let input = parseInt(prompt('Inputkan angka'))
+        if (input == parseInt(input)){
+           arrData.push(input)
+        } else {
+            isRepeat=false
+        }
+       
+     
+    } while (isRepeat)
+​
+    // console.log(arrData)
+​
+    let hasil = arrData.sort(function(a, b){return a - b});
+    console.log(hasil)
+    // let tampilkan = `Nilai terendah ${hasil[0]} \nNilai tertinggi ${hasil[hasil.length-1]}`
+    let tampilkanMax=0
+    let tampilkanMin=9999999
+    for (let i=0; i<arrData.length; i++){
+        if (tampilkanMax <= arrData[i]){
+            tampilkanMax = arrData[i] 
+        } 
+        if (arrData[i] <= tampilkanMin){
+            tampilkanMin = arrData[i]
+        }
+        
+    }
+    console.log(`Angka Maximal : ${tampilkanMax}`)
+    console.log(`Angka Minimal :${tampilkanMin}`)
+    alert (`Hasil pengurutan : ${hasil} \n Angka Minimal ${tampilkanMin} \n Angka Maksimal : ${tampilkanMax} \n ===== \n 
+    Selengkapnya silahkan liat pada console`)
+​
+​
+    
+</script>
+​
+</html>

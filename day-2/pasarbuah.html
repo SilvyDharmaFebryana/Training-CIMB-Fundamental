@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+//harga buah
+let hargaleci = 2000
+let hargamangga = 3000
+let hargajeruk = 4000
+let hargaapel = 5000
+
+//stock buah
+let stockleci = 10
+let stockmangga = 12
+let stockjeruk = 14
+let stockapel = 16
+
+//let condition = true
+
+let leci = parseInt(prompt('Masukkan jumlah leci yang ingin anda beli'))
+if (leci >= stockleci) {
+    alert('stock kurang')
+    condition = true
+} else 
+{
+    let mangga = parseInt(prompt('Masukkan jumlah mangga yang ingin anda beli'))
+    if (mangga >= stockmangga){
+    alert('stock kurang')
+    } else 
+    {
+        let jeruk = parseInt(prompt('Masukkan jumlah jeruk yang ingin anda beli'))
+        if (jeruk >= stockjeruk){
+        alert('stock kurang')
+        } else 
+        {
+            let apel = parseInt(prompt('Masukkan jumlah apel yang ingin anda beli'))
+            if (apel >= stockapel){
+            alert('Stock kurang')
+            } else {
+                let total = (leci*hargaleci) + (mangga*hargamangga) + (jeruk*hargajeruk) + (apel*hargaapel)
+                alert('Total belanjaan anda: Rp' + total)
+                let uang = prompt('masukkan jumlah uang') 
+                    if (total > uang) {
+                        alert('Mohon maaf uang anda kurang')
+                        } else if(total < uang) {
+                            alert('Kembalian anda : Rp' + (uang - total))
+                    } else {
+                         alert('Terimakasih atas kunjungannya')
+                    }
+            }
+                }
+            }
+        }
+    
+</script>
+</html>

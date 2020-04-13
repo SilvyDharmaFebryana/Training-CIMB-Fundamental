@@ -1,0 +1,92 @@
+
+ada function yang memakai return ada yang tidak
+
+untuk function yang tidak memakai return hanya akan di execute aja tanpa adanya parameter
+
+
+
+
+===============================================================================================
+
+---method yang harus di pelajari---
+
+slice 
+splice
+map
+forEach
+filter
+.indexOf
+sort
+reduce >> paling ribet !!
+
+===============================================================================================
+
+bikin toko
+menu admin dan user
+
+---admin--- 
+1. add item
+2. delete item
+	* ketik nama barangnya bukan indexnya 
+3. show item
+4. logout
+
+---user---
+1. pilih item 
+2. pas beli, yang muncul di menu user, pilihan jenis barang yang ingin di beli
+	a. buah
+	   > property (tanggal kadaluarsa) 
+			* masukkan DD-MM-YYYY (new Date == bisa di simpan di satu variabel, dan banyak method, berdasarkan input dan mesin)
+			* misalnya udh expired, user pas mau beli ada alert 'JANGANNNN UDH EXPIRED'
+	b. baju
+	   > property (size)
+			* S 1
+			* M 2
+			* L 3
+	c. Hp	
+	   > property (garansi)
+			* ada
+			* tidak ada (tampilkan alert 'ini ga ada garansinya guys!!' dan confirm 'mau ttp beli?')
+			
+
+
+
+
+1. beli buah (misal beli buah apel, mau apel apa? apel malang? apel fuji? apel ....?
+2. beli baju (pilih ukuran s,m,l,xl,xxl)
+3. beli hp (mau beli merk apa?)
+
+======================
+
+pembuatan nama 
+
+variabel = harus huruf kecil awalnya
+function = huruf kecil
+class = huruf besar
+
+===========================
+
+kalo satu class di gabung dengan class lain memakai extend 
+
+constructor = sama kayak parameter
+super = manggil parameter dari parents nya ...
+
+=============================
+
+
+sebuah function yang mengitung parkir 
+
+1jam 2000
+jam berikutnya 500
+
+3jam 3000
+
+
+
+
+return median
+
+
+
+
+

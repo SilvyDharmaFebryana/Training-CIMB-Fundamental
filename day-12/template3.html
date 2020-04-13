@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        fieldset {
+            margin-left: 100px;
+            margin-right: 100px;
+            border: 2px solid black;
+            background-color: ghostwhite
+        }
+
+        table,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 15px;
+            background-color: whitesmoke
+        }
+
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            background-color: white
+        }
+
+        tr {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 3px;
+            background-color: white
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        .buttonSubmit {
+            padding: 3px 16px;
+            background-color: cyan
+        }
+
+        .buttonPayment {
+            padding: 3px 16px;
+            background-color: cyan
+        }
+
+        .buttonBayar {
+            padding: 3px 16px;
+            background-color: cyan
+        }
+
+        .inputUang {
+            padding: 4px 16px
+        }
+
+        .kolom {
+            column-count: 2;
+            column-gap: 70px;
+            column-fill: balance
+        }
+    </style>
+
+    <h2>
+        <center>** HAPPY MART **</center>
+    </h2>
+    <fieldset>
+        <legend><b>FILTER</b></legend>
+        <p>Nama Item : <input type="text" id="searchNamaItem" name="namaItem" onkeyup="filterAndSearch()"><br></p>
+        <p>Harga Item : <input type="text" id="searchHargaItemMin" name="hargaItemMin" onkeyup="filterAndSearch()"> -
+            <input type="text" id="searchHargaItemMax" name="hargaItemMax" onkeyup="filterAndSearch()"><br></p>
+        <p>Kategori Item : <select id="searchKategori" onchange="filterAndSearch()" placeholder="">
+            </select></p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>INPUT DATA</b></legend>
+        <p>
+            <table>
+                <tr>
+                    <input id="idItems" type="hidden" placeholder="item id" required>
+                    <td><input id="inputNama" type="text" placeholder="Nama Item" required></td>
+                    <td><input id="inputHarga" type="text" placeholder="Harga Item" required></td>
+                    <td><input id="inputKategori" list="datalist" placeholder="Kategori Item" required>
+                        <datalist id="datalist"> </datalist>
+                    </td>
+                    <td><input id="inputStock" type="text" placeholder="Stock Item" required></td>
+                </tr>
+
+            </table>
+            <br>
+            <input class="buttonSubmit" id="inputBtn" type="submit" value="Input" onclick="addData()">
+            <br>
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>TABEL DATA</b></legend>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Kategori</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Stock</th>
+                        <th>Buy</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="mainData"></tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <br>
+            <h3 id="tabelKosong"></h3>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>KERANJANG BELANJA</b></legend>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Kategori</th>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Qty</th>
+                        <th colspan="2">Jumlah</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cartData"></tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <br>
+            <input class="buttonPayment" id="paymentBtn" type="submit" value="Payment" onclick="paymentCart()">
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend><b>PAYMENT</b></legend>
+        <p>
+            <h2>
+                <center>--- Transaction Detail ---</center>
+            </h2>
+            <div class="kolom">
+                <p id="detailBelanja"></p>
+                <h4 id="subTotalBel" value="subTotalCart()"></h4>
+                <h4 id="totalHargaPPN"></h4>
+                <h4 id="allTotals"></h4>
+                <h4 id="kembalian"></h4>
+
+            </div>
+
+        </p>
+
+
+    </fieldset>
+
+
+
+
+</body>
+<script>
+
+    class Product {
+        constructor(id, nama, harga, kategori, stock) {
+            this.id = id
+            this.nama = nama
+            this.harga = harga
+            this.kategori = kategori
+            this.stock = stock
+        }
+    }
+
+
+    let productData = [
+        new Product('1583983285008', 'Kaos', 95000, 'Clothing', 10),
+        new Product('1583983256676', 'Kiwi', 7000, 'Fruits', 10),
+        new Product('1583983255666', 'Samsung', 4500000, 'Electronic', 10),
+        //  new Product('1584122603659', 'Mangga', 5000, 'Fruits', 10),
+        new Product('1584122658757', 'Samyang', 25000, 'Fast Food', 10),
+
+
+    ]
+
+    let arrCart = []
+    let arrKategori = []
+
+    const addKategori = (category) => {
+        let inKategori
+        let item = productData.find((val) => val.kategori == category)
+
+        if (item) {
+            inKategori = arrKategori.find((val) => val == item.kategori)
+        } else {
+            arrKategori.push(category)
+        }
+    }
+
+
+    const listKategori = (id) => {
+        let optionKategori = ''
+        if (id == 'searchKategori') {
+            optionKategori += `<option selected value="">All</option>`
+        }
+        if (arrKategori.length > 0) {
+            arrKategori.forEach(item => {
+                optionKategori += `<option value="${item}">${item}</option>`
+            })
+        } else {
+            productData.forEach(({ kategori }) => {
+                arrKategori.push(kategori)
+            })
+            arrKategori.forEach(item => {
+                optionKategori += `<option value="${item}">${item}</option>`
+            })
+        }
+        document.getElementById(id).innerHTML = optionKategori
+    }
+    listKategori("datalist")
+    listKategori("searchKategori")
+
+
+
+
+    //===== tampil data ======
+    const renderData = (arr = productData, editIdx) => {
+        let hasil = ''
+        arr.forEach(({ id, nama, harga, kategori, stock }, idx) => {
+            if (editIdx !== idx) {
+                hasil += `
+                <tr>
+                    <td> ${id} </td>
+                    <td> ${kategori} </td>
+                    <td> ${nama} </td>
+                    <td> ${harga} </td>                   
+                    <td> ${stock} </td>
+                    <td><input type="button" onclick="addToCart(${id})" value="buy" required></td>
+                    <td><input type="button" onclick="editData(${id})" value="edit" required></td>
+                    <td><input type="button" onclick="deleteData(${idx})" value="delete" required></td>
+                </tr> `
+            } else {
+                hasil += `
+                <tr>
+                    <td><input type="text" value="${id}" disabled ></td>
+                    <td><input type="text" value="${kategori}" disabled ></td>
+                    <td><input type="text" id= "editNama" value="${nama}"  ></td>
+                    <td><input type="text" id= "editHarga" value="${harga}"  ></td>
+                    <td><input type="text" id= "editStock" value="${stock}"  ></td>
+                    <td><input type="button" disabled onclick="addToCart(${id})" value="buy" ></td>
+                    <td><input type="button" onclick="saveData(${id})" value="save" ></td>
+                    <td><input type="button" onclick="renderData()" value="cancel" ></td>
+                </tr> `
+
+            }
+
+        })
+        document.getElementById("mainData").innerHTML = hasil
+
+    }
+
+    renderData(productData)
+
+
+    //====== tambah data ======
+    const addData = () => {
+
+        let inputNama = document.getElementById("inputNama").value
+        let inputHarga = document.getElementById("inputHarga").value
+        let inputStock = document.getElementById("inputStock").value
+        let inputKategori = document.getElementById("inputKategori").value
+        let noId = new Date().getTime()
+
+        let newProduct = new Product(noId, inputNama, inputHarga, inputKategori, inputStock)
+        let item = productData.find((value) => value.kategori.toLowerCase() == inputKategori.toLowerCase())
+
+        if (inputKategori == false || inputNama == false || inputHarga == false || inputStock == false) {
+            alert("Mohon isi dengan lengkap")
+        } else {
+            if(!item) {
+                arrKategori.push(inputKategori)
+            }
+            productData.push(newProduct)
+            alert("Data ditambah")
+            renderData()
+            listKategori("datalist")
+            listKategori("searchKategori")
+            inputNama = document.getElementById("inputNama").value = ''
+            inputHarga = document.getElementById("inputHarga").value = ''
+            inputStock = document.getElementById("inputStock").value = ''
+            inputKategori = document.getElementById("inputKategori").value = ''
+        }
+    }
+
+
+    //===== filter data ======
+    const filterAndSearch = search => {
+        let hasilFilter = []
+        let filterNama = document.getElementById("searchNamaItem").value
+        let filterKategori = document.getElementById("searchKategori").value
+        let filterHargaMin = document.getElementById("searchHargaItemMin").value
+        let filterHargaMax = document.getElementById("searchHargaItemMax").value
+
+        if (!filterHargaMax) {
+            filterHargaMax = 9999999999
+        } else if (!filterHargaMin) {
+            filterHargaMin = 0
+        }
+
+        productData.forEach((values) => {
+            let { nama, kategori, harga } = values
+            if (nama.toLowerCase().startsWith(filterNama.toLowerCase()) &&
+                kategori.toLowerCase().startsWith(filterKategori.toLowerCase()) &&
+                harga >= filterHargaMin && harga <= filterHargaMax
+            ) {
+                hasilFilter.push(values)
+            }
+
+        })
+        renderData(hasilFilter)
+    }
+
+
+    //===== add to cart =====
+    const addToCart = (id) => {
+        let item = productData.find((value) => value.id == id)
+        let idxItem = productData.findIndex((value) => value.id == id) //objek yang id nya dari objeck produk data, yang id  nya sesuai dengan apa yang kita minta
+        let inCart = arrCart.find((value) => value.id == item.id) // untuk cek udh ada dalam keranjang apa blm?
+
+        if (inCart) {
+            let index = arrCart.findIndex((value) => value.id == inCart.id)
+
+            // let kurang = arrCart[index].stock -= 1
+            if (arrCart[index].qty >= arrCart[index].stock) {
+                alert('Habis stock!')
+            } else {
+                arrCart[index].qty++
+                productData[idxItem].stock--
+                //kurang
+            }
+        } else if (productData[idxItem].stock > 0) {
+            let newCartItem = {
+                ...item,
+                qty: 1
+            }
+            productData[idxItem].stock--
+            arrCart.push(newCartItem)
+
+        } else if (productData[idxItem].stock == 0) {
+            alert("Maaf Stocck tidak tersedia")
+        }
+        renderCart()
+        renderData()
+    }
+
+
+    //======= tampil data keranjang =======
+    const renderCart = () => {
+        let hasilCart = ''
+        arrCart.forEach(({ id, kategori, nama, harga, qty }, index) => {
+            // let ({id, kategori, nama, harga, qty}, index) = value
+            hasilCart += `
+                <tr>
+                    <td> ${id} </td>
+                    <td> ${kategori} </td>
+                    <td> ${nama} </td>
+                    <td> ${harga} </td>                   
+                    <td> ${qty} </td>
+                    <td><input type="button" onclick="kurangDataCart(${id})" value="-" required></td>
+                    <td><input type="button" onclick="addToCart(${id})" value="+" required></td>
+                    <td><input type="button" onclick="deleteCart(${id})" value="delete" required></td>
+                </tr>`
+
+        })
+        document.getElementById("cartData").innerHTML = hasilCart
+    }
+
+
+    //====== Delete Data =======
+    const deleteData = (deleteIndex) => {
+        let deleteData = productData[deleteIndex].id
+
+        productData.splice(deleteIndex, 1)
+        renderData(productData)
+
+        let inCart = arrCart.find((value) => value.id == deleteData)
+        if (inCart) {
+            let index = arrCart.findIndex((value) => value.id == inCart.id)
+            arrCart.splice(index, 1)
+        }
+        renderCart()
+    }
+
+    //====== Delete Cart ========
+    const deleteCart = (id) => {
+        let item = productData.find((value) => value.id == id)
+        let inCart = arrCart.find((value) => value.id == item.id)
+        let idxItem = productData.findIndex((value) => value.id == id)
+
+        if (inCart) {
+            let index = arrCart.findIndex((value) => value.id == inCart.id)
+            productData[idxItem].stock = arrCart[index].qty + productData[idxItem].stock
+            arrCart.splice(index, 1)
+
+        }
+        renderCart()
+        renderData()
+    }
+
+
+    //====== Tambah kurang data in cart ======
+    const kurangDataCart = (id) => {
+
+        let item = productData.find((value) => value.id == id)
+        let idxItem = productData.findIndex((value) => value.id == id) //objek yang id nya dari objeck produk data, yang id  nya sesuai dengan apa yang kita minta
+        let inCart = arrCart.find((value) => value.id == item.id)
+
+        if (inCart) {
+            let index = arrCart.findIndex((value) => value.id == inCart.id)
+
+            arrCart[index].qty -= 1
+            productData[idxItem].stock++
+
+            if (arrCart[index].qty == 0) {
+                arrCart.splice(index, 1)
+
+            }
+
+        }
+        renderCart()
+        renderData()
+    }
+
+
+    const tambahDataCart = (tambah) => {
+        arrCart[tambah].qty += 1
+        arrCart[tambah].stock -= 1
+        if (arrCart[tambah].qty >= arrCart[tambah].stock) {
+            alert('Habis stock!')
+        }
+        renderCart()
+    }
+
+
+    //===== edit ======
+    const editData = (id) => {
+        let idxEditItem = productData.findIndex((value) => {
+            if (value.id == id) {
+                return true
+            }
+        })
+        renderData(productData, idxEditItem)
+    }
+
+
+    //======== Save Data di button edit ==========
+    const saveData = (id) => {
+        let idxSave = productData.findIndex((value) => {
+            if (value.id == id) {
+                return true
+            }
+        })
+
+        let editNama = document.getElementById("editNama").value
+        let editHarga = document.getElementById("editHarga").value
+        let editStock = document.getElementById("editStock").value
+
+        productData[idxSave].nama = editNama
+        productData[idxSave].harga = editHarga
+        productData[idxSave].stock = editStock
+
+        renderData(productData)
+
+    }
+
+
+    //========= Payment ==========
+    const paymentCart = (id) => {
+        let paymentCart = ''
+        let subTotalCart = ''
+        let totalPPNs = ''
+        let allTotals = ''
+        let subTotal = 0
+
+        if (arrCart.length == false) {
+            alert("Maaf tidak ada item untuk di bayarkan")
+            kosong()
+        } else {
+            for (let i = 0; i < arrCart.length; i++) {
+
+                paymentCart +=
+                    `${arrCart[i].id} &nbsp&nbsp| 
+                ${arrCart[i].kategori} | ${arrCart[i].nama} &nbsp&nbsp|  ${arrCart[i].qty} pcs &nbsp=&nbsp ${arrCart[i].harga * arrCart[i].qty} <br>`
+                subTotal += arrCart[i].harga * arrCart[i].qty
+            }
+
+            let totalPPN = subTotal * (0.1)
+            let allTotal = subTotal + totalPPN
+
+            subTotalCart = `Total = Rp. ${subTotal}`
+            totalPPNs = `PPN &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp= Rp. ${totalPPN}`
+            allTotals = `Total Dibayarkan &nbsp&nbsp&nbsp&nbsp= Rp. ${allTotal} <br>
+            <br>
+            Jumlah Dibayarkan = Rp. <input class="inputUang" id="inputUang" type="text" placeholder="Total Uang" >
+            <input class="buttonBayar" type="button" value="Pay" onclick="bayar()">`
+
+            document.getElementById("detailBelanja").innerHTML = `ID &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp | Kategori &nbsp&nbsp&nbsp&nbsp | Nama &nbsp&nbsp&nbsp&nbsp | Qty &nbsp&nbsp&nbsp&nbsp | Total &nbsp&nbsp&nbsp&nbsp <br>
+                ============================================<br>` + paymentCart
+            document.getElementById("subTotalBel").innerHTML = subTotalCart
+            document.getElementById("totalHargaPPN").innerHTML = totalPPNs
+            document.getElementById("allTotals").innerHTML = allTotals
+            return allTotal
+
+
+        }
+
+    }
+
+
+    // ======== function untuk button bayar ==========
+    const bayar = () => {
+        let userPayment = document.getElementById("inputUang").value
+        let hargaTotalBayar = paymentCart()
+        if (userPayment > hargaTotalBayar) {
+            // document.getElementById("allTotals").innerHTML= `Kembalian = Rp. ${userPayment - hargaTotalBayar}`
+            alert(`Kembalian anda Rp.${userPayment - hargaTotalBayar}`);
+            kosong()
+        } else if (userPayment < hargaTotalBayar) {
+            alert(`Uang anda kurang Rp.${hargaTotalBayar - userPayment}`);
+        } else if (userPayment == hargaTotalBayar) {
+            alert("Terima kasih sudah berbelanja di TOKO MACAM MACAM");
+            kosong()
+        }
+    }
+
+
+    //========== function untuk mengkosongkan semua field ==========
+    const kosong = () => {
+        arrCart.length = 0
+        renderCart()
+        document.getElementById("detailBelanja").innerHTML = ''
+        document.getElementById('subTotalBel').innerHTML = ''
+        document.getElementById('totalHargaPPN').innerHTML = ''
+        document.getElementById('allTotals').innerHTML = ''
+        document.getElementById("kembalian").innerHTML = ''
+    }
+
+
+</script>
+
+</html>

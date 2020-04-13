@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script>
+
+    let arrAngka = []
+    let ulang = true
+    let minAngka = 999999999999999999999999999999999999999999999
+    let maxAngka = 1
+
+    do {
+        let angka = prompt('Masukkan Angka')
+
+        if (angka == parseInt(angka)) {
+            arrAngka.push(parseInt(angka))
+        } else {
+            ulang = false
+        }
+
+        let sortAngka = arrAngka.sort(function (a, b) { return a - b })
+
+        for (let i = 0; i < sortAngka.length; i++) {
+            if (maxAngka < sortAngka[i]) {
+                maxAngka = sortAngka[i]
+            } else {
+                maxAngka = maxAngka
+            }
+            if(sortAngka[i] < minAngka ){
+                minAngka = sortAngka[i]
+            } else{
+                minAngka = minAngka
+            }
+        }
+
+        console.log(arrAngka)
+        console.log('minimal angka = ' + minAngka)
+        console.log('maksimal angka = ' + maxAngka)
+
+    } while (ulang)
+
+
+
+
+
+</script>
+
+</html>

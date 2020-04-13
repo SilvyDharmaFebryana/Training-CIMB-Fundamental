@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello Dunia</h1>
+    <!-- <h3 id="interval"></h3>
+    <input type="button" value="Stop" onclick="stopTimer()"> -->
+    <h3 id="timer"></h3>
+    <input type="button" value="start" onclick="startTimer()">
+
+</body>
+<script>
+    // let x = 5
+    // let varInterval = setInterval(() => {
+    //     if(x == 0) {
+    //         clearInterval(varInterval)
+    //         alert('waktu habis')
+    //     }
+    //     document.getElementById("interval").innerHTML = x
+    //     x--
+    // }, 1000)
+
+
+    // const stopTimer = () => {
+    //     clearInterval(varInterval)
+    // }
+
+
+
+    let timer
+    const startTimer = () => {
+        let timerLimit = 10
+        document.getElementById("timer").innerHTML = `Waktu bayar sisa ${timerLimit} detik`
+        timer = setInterval(() => {
+            timerLimit--  
+            document.getElementById("timer").innerHTML = `Waktu bayar sisa ${timerLimit} detik`
+            if (timerLimit == 0) {
+                clearInterval(timer)
+                alert('waktu habis')
+                document.getElementById("timer").innerHTML = ``
+            }
+        }, 1000)
+    }
+
+
+
+
+
+</script>
+</html>

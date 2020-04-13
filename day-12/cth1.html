@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table,
+        tr,
+        td,
+        th,
+        tbody,
+        thead {
+            border: 2px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 8px
+        }
+
+        div {
+            width: 800px;
+            margin-left: 220px;
+
+        }
+
+        thead {
+            background-color: pink
+        }
+
+        tbody,
+        td {
+            background-color: white
+        }
+
+        fieldset {
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- Filter -->
+        <h3 align='center'>Toko Loak</h3>
+        <hr><br>
+        <fieldset>
+            <legend>Filter</legend>
+            <p>Nama : <input type="text" name="nama" id="filterNama" onkeyup="cari()"></p>
+            <p>Harga : <input type="number" name="harga" id="filterhargaMin" onkeyup="cari()"> -
+                <input type="number" name="harga" id="filterhargaMax" onkeyup="cari()">
+            </p>
+            <p>Kategori : <select name="kategori" id="filterKategori" onchange="cari()">
+                    <option value="">Semua Barang</option>
+                    <option value="Fast Food">Fast Food</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Cloth">Cloth</option>
+                    <option value="Fruit">Fruit</option>
+                </select></p>
+            <br>
+            <!-- <th><input type="button" value="Cari" onclick="cari()"></th> -->
+        </fieldset>
+        <!-- input data -->
+        <fieldset>
+            <legend>Input Data</legend>
+            <table>
+                <tr>
+                    <td><input type="text" id="inputNama" placeholder="Input Nama"></td>
+                    <td><input type="number" id="inputHarga" placeholder="Input Harga"></td>
+                    <td><select name="" id="inputKategori">
+                            <option value="all" disabled>Semua Barang</option>
+                            <option value="Fast Food">Fast Food</option>
+                            <option value="Electronic">Electronic</option>
+                            <option value="Cloth">Cloth</option>
+                            <option value="Fruit">Fruit</option>
+                        </select></td>
+                    <td><input type="number" placeholder="Stock" id="inputStock"></td>
+                </tr>
+            </table><br>
+            <input type="submit" value="input" onclick="dataAdd()">
+        </fieldset>
+        <!-- Data Tabel -->
+        <fieldset>
+            <legend>Tabel Data</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th><strong>ID</strong></th>
+                        <th><strong>Kategori</strong></th>
+                        <th><strong>Name</strong></th>
+                        <th><strong>Price</strong></th>
+                        <th><strong>Stock</strong></th>
+                        <th><strong>Buy</strong></th>
+                        <th colspan="2"><strong>Action</strong></th>
+                    </tr>
+                </thead>
+                <tbody id="tabelData">
+                </tbody>
+            </table>
+        </fieldset>
+        <!-- tabel chart -->
+        <fieldset>
+            <legend>Chart</legend>
+            <table>
+
+                <thead>
+                    <tr>
+
+                        <th><strong>ID</strong></th>
+                        <th><strong>Kategori</strong></th>
+                        <th><strong>Name</strong></th>
+                        <th><strong>Price</strong></th>
+                        <th><strong>QTY</strong></th>
+                        <th><strong>Action</strong></th>
+                    </tr>
+                </thead>
+                <tbody id="tabelChart">
+
+                </tbody>
+            </table>
+            <br>
+            <input type="submit" value="Payment" onclick="Transaksi()">
+        </fieldset>
+
+        <fieldset>
+            <legend>Payment</legend>
+            <p id="paymentTulisanPerItem"></p>
+            <p id="paymentTulisanTotal"></p>
+            <p id="uangUser"></p>
+            <hr>
+            <p id="pengumumanUang"></p>
+        </fieldset>
+    </div>
+</body>
+
+<script>
+    class Barang {
+        constructor(id, kategori, nama, harga, stock) {
+            this.id = new Date().getTime() + Math.floor(Math.random() * 100)
+            this.kategori = kategori
+            this.nama = nama
+            this.harga = harga
+            this.stock = stock
+        }
+    }
+    // 130115070 + Math.floor(Math.random() * 100)
+    let date
+    let arrBarang = [
+        new Barang('', 'Fast Food', 'Noodle', 3500, 9),
+        new Barang('', 'Electronic', 'Headphone', 4300000, 8),
+        new Barang('', 'Cloth', 'Hoodie', 300000, 7),
+        new Barang('', 'Fruit', 'Apple', 10000, 8),
+    ]
+
+    const renderData = (arr = arrBarang, editIndex) => {
+        let hasil = ''
+        arr.forEach(({ id, nama, kategori, harga, stock }, index) => {
+            if (index !== editIndex) {
+                hasil +=
+                    `
+            <tr>
+                <td>${id}</td>
+                <td>${kategori}</td>
+                <td>${nama}</td>
+                <td>${harga}</td>
+                <td>${stock}</td>
+                <td><input id='addButton' type="button" onclick ="addtoChart(${id})" value="Buy"></td>
+                <td><input id='deleteButton' type="button" onclick='deleteData(${id})' value="Delete"></td>
+                <td><input id='editButton' type="button" value="Edit" onclick ="editData(${id})"></td>   
+            </tr>
+            `
+            }
+            else {
+                hasil +=
+                    `
+            <tr>
+                <td><input type="text" value ="${id}" disabled></td>
+                <td><input type="text" value ="${kategori}" disabled></td>
+                <td><input type="text" value ="${nama}" id="editNama"></td>
+                <td><input type="text" value ="${harga}" id="editHarga"></td>
+                <td><input type="text" value ="${stock}" id="editStock"></td>
+                <td><input id='addButton' disabled type="button" onclick ="addtoChart(${id})" value="Buy"></td>
+                <td><input type="button" value="Save" onclick="saveData(${index})"></td>
+                <td><input type="button" value="Cancel" onclick="renderData()"></td>   
+            </tr>
+            `
+            }
+        })
+
+        document.getElementById('tabelData').innerHTML = hasil
+    }
+    renderData()
+
+    const cari = () => {
+        let hasil_pencarian = []
+        let filterNama = document.getElementById('filterNama').value
+        let filterKategori = document.getElementById('filterKategori').value
+        let filterhargaMin = document.getElementById('filterhargaMin').value
+        let filterhargaMax = document.getElementById('filterhargaMax').value
+        arrBarang.forEach((val) => {
+            let { nama, harga, kategori } = val
+            if (nama.toLowerCase().startsWith(filterNama.toLowerCase()) &&
+                kategori.toLowerCase().startsWith(filterKategori.toLowerCase()) &&
+                (filterhargaMin <= harga || filterhargaMin == '') &&
+                (filterhargaMax >= harga || filterhargaMax == '')) {
+                hasil_pencarian.push(val)
+            }
+        }
+        )
+        renderData(hasil_pencarian)
+    }
+
+    const dataAdd = () => {
+        let inputNama = document.getElementById('inputNama').value
+        let inputHarga = parseInt(document.getElementById('inputHarga').value)
+        let inputKategori = document.getElementById('inputKategori').value
+        let inputStock = document.getElementById('inputStock').value
+        let tambahData = new Barang(' ', inputKategori, inputNama, inputHarga, '', inputStock)
+        if (inputNama && inputHarga && inputKategori && inputStock) {
+            arrBarang.push(tambahData)
+            renderData()
+            alert('Data Sudah Ditambah')
+            inputNama = document.getElementById('inputNama').value = ''
+            inputHarga = document.getElementById('inputHarga').value = ''
+            inputKategori = document.getElementById('inputKategori').value = ''
+            inputStock = document.getElementById('inputStock').value = ''
+        }
+        else {
+            alert('Data Masih Ada yang kosong . . . !')
+            inputNama = document.getElementById('inputNama').value = ''
+            inputHarga = document.getElementById('inputHarga').value = ''
+            inputKategori = document.getElementById('inputKategori').value = ''
+            inputStock = document.getElementById('inputStock').value = ''
+        }
+    }
+
+    const deleteData = (id) => {
+        let idx = arrBarang.findIndex((val) => val.id == id)
+
+        let isInChart = arrCart.find((val) => val.id == id)
+
+        arrBarang.splice(idx, 1)
+        if (isInChart) {
+            let idxcart = arrCart.findIndex((val) => val.id == id)
+            let index2 = arrCart[idxcart].id
+            deleteChart(index2)
+
+        }
+        // alert('Data Telah Terhapus')
+        renderData()
+        if (arrBarang.length == 0) {
+            alert('Data Kosong')
+        }
+    }
+
+    let arrCart = []
+    const addtoChart = (id) => {
+
+        let item = arrBarang.find((val) => val.id == id)
+        let itemIndex = arrBarang.findIndex((val) => val.id == id)
+        let isInChart = arrCart.find((val) => val.id == item.id)
+
+        if (isInChart) {
+            let idx = arrCart.findIndex((val) => val.id == isInChart.id)
+            if (arrCart[idx].qty >= arrCart[idx].stock) {
+                alert('habis')
+            }
+            else {
+                arrCart[idx].qty++
+                arrBarang[itemIndex].stock--
+                document.getElementById('pengumumanUang').innerHTML = ``
+            }
+        }
+        else if (arrBarang[itemIndex].stock > 0) {
+
+            let newCartItem = {
+                ...item,
+                qty: 1
+            }
+            arrBarang[itemIndex].stock--
+            // arrBarang[idx].stock--
+            arrCart.push(newCartItem)
+            document.getElementById('pengumumanUang').innerHTML = ``
+        }
+        else if (arrBarang[itemIndex].stock == 0) {
+            alert('SoldOut')
+        }
+        RenderChart()
+        renderData()
+    }
+    const RenderChart = () => {
+        let hasilChart = ''
+        arrCart.forEach(({ id, kategori, nama, harga, qty }) => {
+            // let {id,kategori,nama,harga,qty} = val
+            hasilChart += `
+            <tr>
+                    <td>${id}</td>
+                    <td>${kategori}</td>
+                    <td>${nama}</td>
+                    <td>${harga}</td>
+                    <td>${qty}</td>
+                    <td><input type="button" value ="Delete" onclick='deleteChart(${id})'> </td>
+                </tr>
+            `
+        })
+        document.getElementById("tabelChart").innerHTML = hasilChart
+    }
+
+    const deleteChart = (id) => {
+        // arrCart[chartIndex].qty--
+        // alert('delete ' + arrCart[chartIndex].nama)
+        // if (arrCart[chartIndex].qty == 0) {
+        let idx = arrCart.findIndex((val) => val.id == id)
+
+        // let isInChart = arrCart.find((val)=> val.id == id)
+        arrCart.splice(idx, 1)
+        // }
+        RenderChart()
+        Transaksi()
+    }
+    let totalSemua = 0
+    const Transaksi = () => {
+        let hargaTotal = 0
+        let tulisan = ''
+        if (arrCart.length == 0) {
+            document.getElementById('paymentTulisanPerItem').innerHTML = 'KOSONG'
+            document.getElementById('paymentTulisanTotal').innerHTML = `Harga Total Keseluruhan Adalah = kosong`
+            document.getElementById('uangUser').innerHTML = ''
+        }
+
+        else {
+            for (let i = 0; i < arrCart.length; i++) {
+                hargaTotal += arrCart[i].qty * arrCart[i].harga
+                tulisan += arrCart[i].nama + ' sebanyak ' + arrCart[i].qty + ' item dengan harga ' + (arrCart[i].qty * arrCart[i].harga) + '<br> <br>'
+            }
+            document.getElementById('paymentTulisanPerItem').innerHTML = tulisan
+            let ppn = hargaTotal * (10 / 100)
+            totalSemua = hargaTotal + ppn
+            document.getElementById('paymentTulisanTotal').innerHTML = ` Harga Total Keseluruhan Adalah = ${hargaTotal} <br>
+                                                                    PPN = ${ppn} <br>
+                                                                    Total dengan PPN = ${totalSemua}`
+            document.getElementById('uangUser').innerHTML = `   <input type="text" placeholder="Uang Anda" id="UangInput"> 
+                                                            <input type="button" value="Pay" onclick="pembayaran()">`
+        }
+    }
+    const pembayaran = () => {
+        let InputUang = document.getElementById('UangInput').value
+
+        if (InputUang > totalSemua) {
+            let kembalian = InputUang - totalSemua
+            document.getElementById('pengumumanUang').innerHTML = `Kembalian Anda Adalah ${kembalian}`
+            arrCart.length = 0
+            document.getElementById('paymentTulisanPerItem').innerHTML = ''
+            document.getElementById('paymentTulisanTotal').innerHTML = ``
+            document.getElementById('uangUser').innerHTML = ''
+        }
+        else if (InputUang == totalSemua) {
+            document.getElementById('pengumumanUang').innerHTML = `Uang Anda Pas`
+            arrCart.length = 0
+            document.getElementById('paymentTulisanPerItem').innerHTML = ''
+            document.getElementById('paymentTulisanTotal').innerHTML = ``
+            document.getElementById('uangUser').innerHTML = ''
+        }
+        else {
+            let kurangUang = totalSemua - InputUang
+            document.getElementById('pengumumanUang').innerHTML = `Kurang Uang Anda Adalah ${kurangUang}`
+
+        }
+
+
+
+        RenderChart()
+    }
+    editData = (id) => {
+        let indexitem = arrBarang.findIndex((val) => {
+            if (val.id == id) {
+                return true
+            }
+        }
+        )
+        renderData(arrBarang, indexitem)
+    }
+
+    const saveData = (indexSave) => {
+        let saveID = arrBarang[indexSave].id
+        let saveKategori = arrBarang[indexSave].kategori
+        let saveNama = document.getElementById('editNama').value
+        let saveHarga = document.getElementById('editHarga').value
+        let saveStock = document.getElementById('editStock').value
+        arrBarang[indexSave] = new Barang(saveID, saveKategori, saveNama, saveHarga, saveStock)
+        renderData()
+
+    }
+</script>
+
+</html>
